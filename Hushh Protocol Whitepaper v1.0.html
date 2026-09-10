@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hushh Protocol — Whitepaper v1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBFAF7;
+  --paper-2:#F4F1EA;
+  --ink:#14161A;
+  --ink-2:#3A3F46;
+  --ink-3:#6B717A;
+  --rule:#DCD6C9;
+  --rule-2:#E9E4D9;
+  --brass:#A8781F;
+  --brass-soft:#C8973F;
+  --brass-wash:#FAF3E4;
+  --green:#2F6B4F;
+  --red:#8C3A2E;
+}
+*{box-sizing:border-box}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Newsreader','Charter','Bitstream Charter','Iowan Old Style',Georgia,serif;
+  font-size:10.6pt;
+  line-height:1.62;
+  font-weight:400;
+  text-rendering:optimizeLegibility;
+}
+.doc{max-width:820px;margin:0 auto;padding:64px 56px 96px}
+
+/* ---------- typography ---------- */
+p{margin:0 0 0.95em}
+a{color:var(--brass);text-decoration:none;border-bottom:1px solid var(--rule)}
+strong{font-weight:600}
+em{font-style:italic}
+code,.mono{font-family:'JetBrains Mono','DejaVu Sans Mono','Liberation Mono',monospace;font-size:0.855em;letter-spacing:-0.01em}
+code{background:var(--paper-2);padding:0.08em 0.34em;border-radius:3px;color:#2A2E34}
+
+h1,h2,h3,h4{font-weight:500;line-height:1.22;margin:0}
+h2{
+  font-size:17.5pt;letter-spacing:-0.012em;margin:2.6em 0 0.15em;
+  padding-top:0.75em;border-top:1px solid var(--rule);
+}
+h2 .num{
+  display:block;font-family:'Inter',system-ui,sans-serif;font-size:8pt;font-weight:600;
+  letter-spacing:0.18em;text-transform:uppercase;color:var(--brass);margin-bottom:0.85em;
+}
+h3{font-size:12.4pt;margin:1.9em 0 0.5em;letter-spacing:-0.005em}
+h3 .n{color:var(--ink-3);font-weight:400;margin-right:0.5em}
+h4{font-size:10.6pt;margin:1.4em 0 0.35em;font-weight:600}
+.lede{font-size:11.6pt;color:var(--ink-2);line-height:1.6;margin:0.9em 0 1.6em}
+
+ul,ol{margin:0 0 1em;padding-left:1.25em}
+li{margin-bottom:0.4em}
+ul.tight li,ol.tight li{margin-bottom:0.15em}
+.dash{list-style:none;padding-left:0}
+.dash li{position:relative;padding-left:1.1em}
+.dash li::before{content:"—";position:absolute;left:0;color:var(--brass-soft)}
+
+/* ---------- labels & small caps ---------- */
+.label{
+  font-family:'Inter',system-ui,sans-serif;font-size:7.6pt;font-weight:600;
+  letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-3);
+}
+.kicker{font-family:'Inter',system-ui,sans-serif;font-size:8pt;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--brass)}
+
+/* ---------- cover ---------- */
+.cover{padding:40px 0 0;page-break-after:always}
+.cover .rule{height:2px;background:var(--ink);margin:0 0 28px;width:52px}
+.cover h1{font-size:44pt;line-height:0.98;letter-spacing:-0.032em;font-weight:400;margin:0}
+.cover h1 span{display:block;color:var(--brass)}
+.cover .tag{font-size:14pt;color:var(--ink-2);margin:22px 0 0;font-style:italic}
+.cover .abs{margin-top:38px;font-size:11.2pt;line-height:1.62;color:var(--ink-2);max-width:640px}
+.cover .meta{margin-top:46px;border-top:1px solid var(--rule);padding-top:18px}
+.cover .meta table{width:100%;border-collapse:collapse}
+.cover .meta td{padding:5px 0;vertical-align:top;border:0}
+.cover .meta td:first-child{width:180px}
+
+.spec-strip{display:flex;flex-wrap:wrap;gap:0;margin:34px 0 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.spec-strip div{flex:1 1 20%;padding:14px 16px 14px 0;min-width:130px}
+.spec-strip .v{font-size:11.5pt;margin-top:3px;display:block}
+
+/* ---------- tables ---------- */
+table.t{width:100%;border-collapse:collapse;margin:1.2em 0 1.5em;font-size:9.6pt}
+table.t th{
+  text-align:left;font-family:'Inter',system-ui,sans-serif;font-size:7.6pt;font-weight:600;
+  letter-spacing:0.13em;text-transform:uppercase;color:var(--ink-3);
+  border-bottom:1px solid var(--ink);padding:0 12px 7px 0;vertical-align:bottom;
+}
+table.t td{padding:9px 12px 9px 0;border-bottom:1px solid var(--rule-2);vertical-align:top;line-height:1.48}
+table.t tr:last-child td{border-bottom:1px solid var(--rule)}
+table.t td:last-child,table.t th:last-child{padding-right:0}
+table.t .c{text-align:center}
+.yes{color:var(--red);font-weight:600}
+.no{color:var(--green);font-weight:600}
+.part{color:var(--brass);font-weight:600}
+
+/* ---------- code blocks ---------- */
+pre{
+  font-family:'JetBrains Mono','DejaVu Sans Mono','Liberation Mono',monospace;
+  font-size:8.5pt;line-height:1.62;background:var(--paper-2);border:1px solid var(--rule-2);
+  border-left:2px solid var(--brass-soft);
+  padding:14px 16px;overflow-x:auto;margin:1.1em 0 1.3em;white-space:pre;color:#22262B;
+  border-radius:2px;
+}
+pre .c{color:var(--ink-3)}
+pre b{font-weight:500;color:var(--brass)}
+
+/* ---------- callouts ---------- */
+.box{border:1px solid var(--rule);background:#FDFCFA;padding:16px 18px;margin:1.3em 0;border-radius:2px}
+.box .label{display:block;margin-bottom:7px}
+.box p:last-child{margin-bottom:0}
+.box.brass{background:var(--brass-wash);border-color:#E8D7AE}
+.box.brass .label{color:var(--brass)}
+
+.defn{border-left:2px solid var(--ink);padding:2px 0 2px 16px;margin:1.3em 0}
+.defn .h{font-weight:600;font-family:'Inter',system-ui,sans-serif;font-size:9pt;letter-spacing:0.01em}
+.defn p:last-child{margin-bottom:0}
+
+.math{
+  font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-size:9.2pt;
+  text-align:center;margin:1.2em 0;line-height:1.9;color:#22262B;
+}
+
+/* ---------- figures ---------- */
+figure{margin:1.6em 0 1.8em}
+figcaption{font-size:8.6pt;color:var(--ink-3);margin-top:10px;font-family:'Inter',system-ui,sans-serif;line-height:1.5}
+figcaption b{color:var(--ink-2);font-weight:600}
+svg{display:block;width:100%;height:auto}
+
+/* ---------- toc ---------- */
+.toc{page-break-after:always;padding-top:8px}
+.toc ol{list-style:none;padding:0;margin:1.4em 0 0;column-count:2;column-gap:44px}
+.toc li{margin-bottom:0.55em;font-size:10pt;break-inside:avoid}
+.toc .n{color:var(--brass);font-family:'Inter',sans-serif;font-size:8pt;font-weight:600;margin-right:0.7em}
+.toc .sub{display:block;padding-left:2.1em;font-size:9pt;color:var(--ink-3);margin-top:0.15em}
+
+/* ---------- footer ---------- */
+.colophon{margin-top:4em;border-top:1px solid var(--rule);padding-top:16px;font-size:8.6pt;color:var(--ink-3);font-family:'Inter',system-ui,sans-serif;line-height:1.6}
+
+/* ---------- print ---------- */
+@page{size:A4;margin:18mm 16mm 16mm}
+@media print{
+  .doc{max-width:none;padding:0}
+  body{font-size:9.9pt}
+  h2{page-break-after:avoid}
+  h3,h4{page-break-after:avoid}
+  figure,table.t,pre,.box,.defn{page-break-inside:avoid}
+  .cover{padding-top:8mm}
+}
+@media (max-width:700px){
+  .doc{padding:32px 22px 64px}
+  .cover h1{font-size:34pt}
+  .toc ol{column-count:1}
+  .spec-strip div{flex:1 1 45%}
+}
+</style>
+</head>
+<body>
+<div class="doc">
+<!-- ============ COVER ============ -->
+<section class="cover">
+  <div class="kicker">Whitepaper · Version 1.0 · July 2026</div>
+  <div class="rule" style="margin-top:22px"></div>
+  <h1>Hushh<span>Protocol</span></h1>
+  <p class="tag">Send silently.</p>
+
+  <p class="abs">A zero-knowledge payment rail for USDC on Arc. Hushh severs the on-chain
+  link between who paid and who was paid, using a shielded note pool of Poseidon commitments
+  and Groth16 proofs of Merkle membership, while presenting the user with nothing more
+  complicated than sending a message to an <code>@username</code>.</p>
+
+  <div class="spec-strip">
+    <div><span class="label">Network</span><span class="v">Arc Testnet</span></div>
+    <div><span class="label">Chain ID</span><span class="v mono">5042002</span></div>
+    <div><span class="label">Asset</span><span class="v">USDC</span></div>
+    <div><span class="label">Proof system</span><span class="v">Groth16 / BN254</span></div>
+    <div><span class="label">Status</span><span class="v">Testnet, unaudited</span></div>
+  </div>
+
+  <div class="meta">
+    <table>
+      <tr><td class="label">Document</td><td>Hushh Protocol Whitepaper, v1.0</td></tr>
+      <tr><td class="label">Supersedes</td><td>Hushh Litepaper v1.0</td></tr>
+      <tr><td class="label">Scope</td><td>Protocol specification, cryptographic construction, security analysis, and stated limits for the v1 shielded note pool</td></tr>
+      <tr><td class="label">Audience</td><td>Protocol engineers, cryptography reviewers, integrators, and technically-inclined users evaluating real-world privacy risk</td></tr>
+      <tr><td class="label">Reading path</td><td>Sections 1–3 are conceptual. Sections 4–7 are the specification. Sections 8–10 are the security argument and its limits. Appendices carry parameters and notation.</td></tr>
+    </table>
+  </div>
+
+  <div class="box" style="margin-top:34px">
+    <span class="label">On the honesty of this document</span>
+    <p>A privacy protocol that overstates its guarantees is more dangerous than one that does not
+    exist, because users calibrate real-world behaviour against its claims. Every property asserted
+    here is stated with the assumption it rests on. Section 10 enumerates, without hedging, what
+    Hushh does not protect. Where a number is an estimate rather than a measurement, it is
+    labelled as such.</p>
+  </div>
+</section>
+
+<!-- ============ TOC ============ -->
+<section class="toc">
+  <div class="kicker">Contents</div>
+  <ol>
+    <li><span class="n">01</span>Introduction<span class="sub">The transparency problem · why mitigations fail · contributions</span></li>
+    <li><span class="n">02</span>Preliminaries<span class="sub">Notation · BN254 · Poseidon · Merkle accumulators · Groth16</span></li>
+    <li><span class="n">03</span>Design goals and non-goals<span class="sub">Requirements · explicit exclusions · why Arc</span></li>
+    <li><span class="n">04</span>Protocol specification<span class="sub">Parties · keys · notes · the four algorithms</span></li>
+    <li><span class="n">05</span>The withdraw circuit<span class="sub">Relation · constraints · public inputs · soundness checks</span></li>
+    <li><span class="n">06</span>On-chain design<span class="sub">BulletPool · root window · verifier · validation order · gas</span></li>
+    <li><span class="n">07</span>Off-chain infrastructure<span class="sub">Indexer · backend · SDK · note encryption</span></li>
+    <li><span class="n">08</span>Security analysis<span class="sub">Definitions · reductions · attack catalogue · trust matrix</span></li>
+    <li><span class="n">09</span>Anonymity as a quantity<span class="sub">Effective anonymity set · timing decay · user guidance</span></li>
+    <li><span class="n">10</span>Honest limits<span class="sub">What Hushh does not protect</span></li>
+    <li><span class="n">11</span>Deployment<span class="sub">Parameters · addresses · services</span></li>
+    <li><span class="n">12</span>Roadmap<span class="sub">Decentralising liveness before widening surface</span></li>
+    <li><span class="n">13</span>Compliance posture<span class="sub">Viewing keys · selective disclosure · non-custody</span></li>
+    <li><span class="n">14</span>Design principles and open problems</li>
+    <li><span class="n">A</span>Notation<span class="sub">Appendix</span></li>
+    <li><span class="n">B</span>Contract surface<span class="sub">Appendix</span></li>
+    <li><span class="n">C</span>Public input encoding<span class="sub">Appendix</span></li>
+    <li><span class="n">D</span>Parameter table<span class="sub">Appendix</span></li>
+    <li><span class="n">R</span>References</li>
+  </ol>
+</section>
+
+<!-- ============ 1 ============ -->
+<h2><span class="num">Section 01</span>Introduction</h2>
+
+<p class="lede">Every transfer on a public blockchain permanently publishes an edge:
+<code>sender → recipient</code>. For payroll, donations, remittances and vendor payments,
+that edge is not incidental metadata. It is the sensitive information. Hushh removes it.</p>
+
+<h3><span class="n">1.1</span>The transparency problem</h3>
+
+<p>Public chains are transparent by construction. The property that makes settlement
+independently verifiable also makes every economic relationship globally readable and
+trivially clusterable. Transparency is not a bug to be patched; it is the mechanism by which
+the ledger is trusted at all. The question is therefore not how to make the chain opaque, but
+how to publish enough for verification and nothing more.</p>
+
+<p>The cost of publishing more than that is concrete and falls differently across use cases:</p>
+
+<table class="t">
+  <tr><th style="width:22%">Use case</th><th>What the chain discloses, permanently and to everyone</th></tr>
+  <tr><td>Payroll</td><td>Each contributor's exact compensation, payment cadence, and affiliation with the paying entity, visible to competitors, counterparties, and the contributor's own peers. Salary confidentiality, a near-universal norm off-chain, is unachievable on-chain.</td></tr>
+  <tr><td>Donations</td><td>A permanent, enumerable list of supporters of a political, legal, or humanitarian cause, in jurisdictions where such a list may later be used against them. Unlike a leaked donor list, this one cannot be retracted.</td></tr>
+  <tr><td>Remittances</td><td>Recipients in a single corridor become a targetable cohort with known balances and predictable arrival times. The threat here is not analytical but physical.</td></tr>
+  <tr><td>Commerce</td><td>Supplier identities, order volumes, margins, and payment terms, disclosed to any counterparty before a negotiation begins.</td></tr>
+  <tr><td>Personal</td><td>Rent, medical payments, legal retainers, and support to family members, all attached to a long-lived address that is frequently linked to a real identity through a single exchange deposit.</td></tr>
+</table>
+
+<p>The common structure is that the <em>relationship</em>, not the amount, is what leaks first
+and hurts most. An observer who learns that address A pays address B every fortnight has
+learned an employment relationship regardless of whether the amount is legible.</p>
+
+<h3><span class="n">1.2</span>Why the usual mitigations fail</h3>
+
+<div class="dash">
+<ul class="dash">
+  <li><strong>Fresh addresses per payment.</strong> Defeated by funding-trail analysis. A new
+  address must be funded before it can transact, and the funding transaction is precisely the
+  edge the fresh address was meant to avoid. The technique displaces the link by one hop; it
+  does not remove it.</li>
+  <li><strong>Custodial intermediaries.</strong> Reintroduce exactly the counterparty trust
+  that on-chain settlement was adopted to remove, and concentrate a single deanonymisation
+  target holding the complete mapping. The privacy is real but is held by someone else and is
+  revocable by subpoena, breach, or policy change.</li>
+  <li><strong>Mixers with variable amounts.</strong> Amount correlation is the strongest
+  passive heuristic available to an analyst. A withdrawal of 4,317.62 units shortly after a
+  deposit of the same size is a link, whatever the cryptography in between.</li>
+  <li><strong>Existing shielded pools.</strong> Cryptographically adequate and operationally
+  hostile: raw note strings the user must not lose, manual backups, no identity layer, no
+  delivery mechanism, no recovery path. Their security model assumes an operator-grade user.
+  Most payments are not made by operator-grade users, and a privacy tool used incorrectly is
+  usually worse than none, because it produces confident false assurance.</li>
+</ul>
+</div>
+
+<div class="box brass">
+  <span class="label">The gap Hushh targets</span>
+  <p>Unlinkability that a non-cryptographer can operate correctly on the <em>first</em>
+  attempt, denominated in the stablecoin people actually hold, on a chain whose dominant
+  activity is stablecoin payments. The cryptographic lineage here is well understood and
+  deliberately unoriginal. The contribution is the layer above it.</p>
+</div>
+
+<h3><span class="n">1.3</span>Contributions</h3>
+
+<p>Hushh is a shielded note pool with an identity and delivery layer built on top. Concretely,
+this document specifies:</p>
+
+<ol>
+  <li>A <strong>fixed-denomination note pool</strong> over ERC-20 USDC, in which deposit and
+  withdraw share no on-chain field other than a Merkle root shared with every other note in
+  the tree (§4).</li>
+  <li>A <strong>single withdraw circuit</strong> that simultaneously enforces commitment
+  derivation, Merkle membership, nullifier binding, and payout-address binding, with the
+  recipient address fixed at proving time so that a proof observed in the mempool cannot be
+  redirected (§5).</li>
+  <li>A <strong>rolling 64-root acceptance window</strong> that decouples proof generation
+  from block timing, removing a race that otherwise penalises users precisely when the pool
+  is busiest, without permitting unbounded root replay (§6.2).</li>
+  <li>A <strong>strict safety/liveness split</strong>: every off-chain component may stall the
+  system and none may break it. The indexer and backend are specified as untrusted for both
+  custody and unlinkability, and the specification states what each learns (§7, §8.5).</li>
+  <li>A <strong>usability layer</strong> of username resolution, an end-to-end encrypted note
+  inbox, and browser-native proving, none of which is trusted with funds or secrets (§7.2).</li>
+  <li>A <strong>quantitative treatment of the anonymity set</strong>, including denomination
+  partitioning and timing decay, so that users can reason about their actual exposure rather
+  than a binary claim of privacy (§9).</li>
+</ol>
+
+<p>What is deliberately <em>not</em> claimed: encrypted balances, mainnet readiness, a
+multi-party trusted setup, or a decentralised root poster. Each is roadmapped (§12) and each
+is listed as a present limitation (§10).</p>
+<!-- ============ 2 ============ -->
+<h2><span class="num">Section 02</span>Preliminaries</h2>
+
+<p class="lede">Nothing in this section is novel. It is included so that the specification in
+§4–§5 can be read without external references, and so that the security argument in §8 has
+named assumptions to rest on.</p>
+
+<h3><span class="n">2.1</span>Notation</h3>
+
+<p>Let <code>F</code> denote the scalar field of BN254, of prime order</p>
+
+<div class="math">r = 21888242871839275222246405745257275088548364400416034343698204186575808495617</div>
+
+<p>All circuit values are elements of <code>F</code>. Byte strings that enter the circuit as
+field elements must be reduced mod <code>r</code>, and the specification is explicit about
+where that reduction happens (§5.3), because an implicit reduction is a classic source of
+soundness bugs. We write <code>x ←$ S</code> for uniform sampling from a set,
+<code>H(·)</code> for the Poseidon permutation-based hash instantiated over <code>F</code>,
+and <code>‖</code> for concatenation. A negligible function in the security parameter
+<code>λ</code> is written <code>negl(λ)</code>.</p>
+
+<h3><span class="n">2.2</span>BN254 and the pairing</h3>
+
+<p>BN254 (also bn128, alt_bn128) is a pairing-friendly Barreto–Naehrig curve with native EVM
+precompiles at addresses <code>0x06</code>, <code>0x07</code>, and <code>0x08</code> for
+addition, scalar multiplication, and the pairing check respectively. Its practical
+significance for Hushh is economic rather than cryptographic: an on-chain Groth16 verification
+over BN254 costs a fixed and modest amount of gas, whereas the same verification over
+BLS12-381 requires in-contract field emulation on chains without the corresponding
+precompiles, at a cost that makes per-payment shielding uneconomic.</p>
+
+<p>The cost accepted in exchange is a security level. Following the Kim–Barbulescu improvements
+to the tower number field sieve, BN254's effective security against discrete logarithm attacks
+in the target group is estimated at roughly 100 bits rather than the 128 bits originally
+claimed. For a testnet payment rail with fixed denominations this is an acceptable margin; it
+is recorded here as a stated assumption rather than left implicit, and migration to a
+higher-security curve is a mainnet consideration (§12).</p>
+
+<h3><span class="n">2.3</span>Poseidon</h3>
+
+<p>Poseidon is an algebraic hash function designed for efficient arithmetisation: its round
+function is a low-degree polynomial map over <code>F</code>, so expressing it as R1CS
+constraints costs tens of constraints per permutation rather than the tens of thousands
+required by a bit-oriented hash such as Keccak-256.</p>
+
+<p>The choice is load-bearing for the product, not merely an optimisation. A depth-20 Merkle
+path requires 20 hash evaluations inside the circuit. With Keccak, the resulting constraint
+count pushes browser proving time from seconds into minutes and, on mobile hardware, into
+failure. Poseidon is what makes client-side proving viable, and client-side proving is what
+makes the "server never holds a secret" invariant (§7) achievable rather than aspirational.</p>
+
+<p>The cost accepted is maturity. Poseidon has substantially less cryptanalytic history than
+Keccak, and its security rests on the difficulty of algebraic attacks (Gröbner basis, interpolation)
+against a low-degree round function. Hushh uses the circomlib instantiation with the standard
+parameter sets for arity 1, 2, and 4.</p>
+
+<h3><span class="n">2.4</span>Merkle accumulators</h3>
+
+<p>An incremental Merkle tree of depth <code>d</code> over Poseidon<sub>2</sub> accumulates up
+to <code>2^d</code> leaves into a single root. Membership of a leaf is proven by supplying
+<code>d</code> sibling hashes and <code>d</code> direction bits; the verifier recomputes the
+root and compares. Hushh uses <code>d = 20</code>, giving a capacity of 1,048,576 notes, which
+is a deliberate over-provision: the tree is cheap to deepen at design time and expensive to
+migrate once notes exist in it.</p>
+
+<p>Crucially, the direction bits must be constrained to be boolean inside the circuit. An
+unconstrained index bit permits a prover to interpolate between the two hash orderings and
+forge membership for a leaf that is not in the tree. This is stated again in §5.4 as a
+soundness-critical check because it is the single most commonly reported bug class in
+production Merkle circuits.</p>
+
+<h3><span class="n">2.5</span>Groth16</h3>
+
+<p>Groth16 is a preprocessing zk-SNARK for R1CS with three properties Hushh depends on:</p>
+
+<ul class="dash dash">
+  <li><strong>Constant proof size</strong> (three group elements, 8 field elements when encoded
+  for the EVM), independent of circuit size.</li>
+  <li><strong>Constant verification cost</strong>, dominated by a single pairing product
+  check, again independent of circuit size. This is what makes withdraw gas predictable.</li>
+  <li><strong>Knowledge soundness</strong> in the algebraic group model: a prover producing an
+  accepting proof for a statement can be extracted to a witness satisfying the relation.</li>
+</ul>
+
+<p>The cost accepted is a <em>circuit-specific</em> trusted setup. The proving and verifying
+keys are derived from structured reference string material whose generation involves secret
+randomness ("toxic waste"). Retention of that randomness by any single party permits
+forging accepting proofs for false statements, which in Hushh means minting withdrawals against
+notes that were never deposited. It does <em>not</em> permit deanonymising users. This
+asymmetry matters and is developed in §8.4.</p>
+
+<div class="box">
+  <span class="label">Assumption ledger</span>
+  <p>The security claims of §8 hold under: (A1) knowledge soundness of Groth16 over BN254;
+  (A2) collision resistance of Poseidon over <code>F</code> at the arities used; (A3) honest
+  generation and destruction of trusted setup randomness by at least one participant;
+  (A4) discrete logarithm hardness in BN254 at the ~100-bit level; (A5) IND-CCA security of the
+  note encryption scheme (§7.4). Failures of A1–A3 are theft-class; failures of A5 are
+  metadata-class. None of A1–A5 failing alone breaks on-chain unlinkability.</p>
+</div>
+
+<h3><span class="n">2.6</span>Related constructions</h3>
+
+<table class="t">
+  <tr><th style="width:20%">System</th><th>Relation to Hushh</th></tr>
+  <tr><td>Zerocash / Zcash</td><td>Origin of the note-commitment-plus-nullifier construction with encrypted amounts. Hushh adopts the structure and deliberately omits encrypted balances in v1, trading confidentiality for a smaller, auditable circuit.</td></tr>
+  <tr><td>Tornado Cash</td><td>The direct architectural ancestor: fixed denominations, a Merkle set of commitments, a nullifier revealed at withdraw. Hushh's departures are the binding of <code>recipientDigest</code>, <code>amount</code>, and <code>tokenHash</code> into the commitment (§5.5), an off-chain tree with a posted-root window (§6.2), and the identity and delivery layer (§7.2).</td></tr>
+  <tr><td>Railgun / Aztec</td><td>Full shielded pools with arbitrary encrypted amounts and in-pool transfers. Strictly stronger privacy, substantially larger circuits and trust surface. This is Hushh's v3 direction (§12), not its v1 claim.</td></tr>
+  <tr><td>Stealth addresses (ERC-5564)</td><td>Solve recipient-address unlinkability without a pool, but leave the funding edge and the amount fully public. Complementary rather than competing: Hushh's <code>recipientDigest</code> is designed to accept a stealth-derived digest, which is the P1 path to repeat-payment unlinkability.</td></tr>
+</table>
+
+<!-- ============ 3 ============ -->
+<h2><span class="num">Section 03</span>Design goals and non-goals</h2>
+
+<h3><span class="n">3.1</span>Goals</h3>
+
+<table class="t">
+  <tr><th style="width:26%">Goal</th><th>Statement</th></tr>
+  <tr><td><strong>G1 · Unlinkability</strong></td><td>No on-chain data connects a deposit transaction to the withdraw transaction that spends it, beyond membership in a root shared with every other note in the tree.</td></tr>
+  <tr><td><strong>G2 · Non-custody</strong></td><td>No party other than the holder of a note's secret can cause that note to be spent. This includes the contract owner, the indexer, the backend operator, and the protocol authors.</td></tr>
+  <tr><td><strong>G3 · Liveness isolation</strong></td><td>Every off-chain component is a liveness dependency and never a safety one. A total compromise of all off-chain infrastructure must not enable theft or deanonymisation.</td></tr>
+  <tr><td><strong>G4 · First-attempt usability</strong></td><td>A user with no cryptographic background completes a private payment correctly on the first try, addressing a human rather than a hex string, with no manual note handling.</td></tr>
+  <tr><td><strong>G5 · Client-side secrets</strong></td><td>Secrets, witnesses, and proofs are generated in the recipient's browser. No secret is transmitted, logged, or recoverable from anything the servers hold.</td></tr>
+  <tr><td><strong>G6 · Calibratable risk</strong></td><td>The system's limits are published in the same document as its claims, quantitatively where possible, so users can reason about actual exposure.</td></tr>
+</table>
+
+<h3><span class="n">3.2</span>Non-goals for v1</h3>
+
+<p>These are excluded on purpose. Each is a real property that Hushh v1 does not have.</p>
+
+<ul class="dash">
+  <li><strong>Amount confidentiality.</strong> Amounts are quantised into fixed denominations, not encrypted. A 50 USDC note is a visible 50 USDC ERC-20 transfer. Privacy of the amount is statistical (everyone uses the same sizes), not cryptographic.</li>
+  <li><strong>In-pool transfers.</strong> Notes cannot be split, merged, or transferred between users without exiting the pool. Larger payments are composed from several notes.</li>
+  <li><strong>Permissionless root posting.</strong> A single relayer posts roots in v1. It cannot steal or deanonymise, but it can stall withdrawals (§8.5).</li>
+  <li><strong>A multi-party trusted setup.</strong> The demo ceremony is single-contributor. This is a prerequisite for mainnet, not for testnet (§10).</li>
+  <li><strong>Automated social delivery.</strong> Delivery over X or similar is copy-paste by design; automated DM delivery is a spam vector and is not built.</li>
+  <li><strong>Programmatic payers and schedulers.</strong> <code>deposit</code> remains callable by contracts, but no scheduling infrastructure is provided.</li>
+</ul>
+
+<h3><span class="n">3.3</span>Why Arc</h3>
+
+<p>Deployment target is not incidental to a privacy design; it determines the size of the
+anonymity set, which is the quantity the entire guarantee scales with.</p>
+
+<table class="t">
+  <tr><th style="width:30%">Property of Arc</th><th>Consequence for Hushh</th></tr>
+  <tr><td>USDC as native gas and settlement asset</td><td>Users hold and reason in a single unit. There is no secondary gas token to acquire before making a private payment, and no volatile denominator complicating fixed-note sizing. The onboarding step most likely to leak metadata (buying gas) disappears.</td></tr>
+  <tr><td>Full EVM equivalence</td><td>Solidity contracts, Hardhat tooling, and the snarkjs-exported verifier pattern port directly. BN254 precompiles are available at predictable cost.</td></tr>
+  <tr><td>Predictable, low fees</td><td>Groth16 verification is a fixed, non-trivial gas cost. Fee predictability is what makes per-payment shielding economically ordinary rather than a luxury reserved for large transfers.</td></tr>
+  <tr><td>Fast, deterministic finality</td><td>The indexer posts roots promptly without deep reorg handling, keeping deposit-to-withdrawable latency short and simplifying the crash-recovery path (§7.1).</td></tr>
+  <tr><td>Payments-oriented ecosystem</td><td>The load-bearing point. A shielded pool's privacy scales with the number of unspent notes it holds. Deploying on a general-purpose chain where payments are a minority of activity produces a thin set; a chain concentrated on stablecoin settlement is where a USDC-denominated anonymity set can plausibly grow.</td></tr>
+</table>
+<!-- ============ 4 ============ -->
+<h2><span class="num">Section 04</span>Protocol specification</h2>
+
+<p class="lede">The protocol proper is four steps. Everything else in this document exists to
+make those four steps usable, or to state precisely what they do and do not guarantee.</p>
+
+<figure>
+<svg viewBox="0 0 820 220" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,1 L7,4 L0,7" fill="none" stroke="#C8973F" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <g>
+    <!-- step boxes -->
+    <g>
+      <rect x="4" y="20" width="180" height="128" fill="#FDFCFA" stroke="#DCD6C9"/>
+      <text x="20" y="46" font-size="10" font-weight="700" fill="#A8781F" letter-spacing="1.6">01</text>
+      <text x="20" y="66" font-size="14" fill="#14161A" font-weight="500">Deposit</text>
+      <text x="20" y="88" font-size="10.5" fill="#3A3F46">Sender locks a fixed-size</text>
+      <text x="20" y="102" font-size="10.5" fill="#3A3F46">USDC note under a</text>
+      <text x="20" y="116" font-size="10.5" fill="#3A3F46">Poseidon commitment.</text>
+      <text x="20" y="138" font-size="9" fill="#6B717A" letter-spacing="0.4">AMOUNT VISIBLE · SENDER VISIBLE</text>
+    </g>
+    <g>
+      <rect x="212" y="20" width="180" height="128" fill="#FDFCFA" stroke="#DCD6C9"/>
+      <text x="228" y="46" font-size="10" font-weight="700" fill="#A8781F" letter-spacing="1.6">02</text>
+      <text x="228" y="66" font-size="14" fill="#14161A" font-weight="500">Index</text>
+      <text x="228" y="88" font-size="10.5" fill="#3A3F46">Indexer inserts the leaf</text>
+      <text x="228" y="102" font-size="10.5" fill="#3A3F46">into a Poseidon tree and</text>
+      <text x="228" y="116" font-size="10.5" fill="#3A3F46">posts the root on-chain.</text>
+      <text x="228" y="138" font-size="9" fill="#6B717A" letter-spacing="0.4">NO SECRET EVER LEAVES CLIENT</text>
+    </g>
+    <g>
+      <rect x="420" y="20" width="180" height="128" fill="#FDFCFA" stroke="#DCD6C9"/>
+      <text x="436" y="46" font-size="10" font-weight="700" fill="#A8781F" letter-spacing="1.6">03</text>
+      <text x="436" y="66" font-size="14" fill="#14161A" font-weight="500">Prove</text>
+      <text x="436" y="88" font-size="10.5" fill="#3A3F46">Recipient proves in zero</text>
+      <text x="436" y="102" font-size="10.5" fill="#3A3F46">knowledge that the note is</text>
+      <text x="436" y="116" font-size="10.5" fill="#3A3F46">a member of a known root.</text>
+      <text x="436" y="138" font-size="9" fill="#6B717A" letter-spacing="0.4">WHICH LEAF STAYS HIDDEN</text>
+    </g>
+    <g>
+      <rect x="628" y="20" width="188" height="128" fill="#FAF3E4" stroke="#E8D7AE"/>
+      <text x="644" y="46" font-size="10" font-weight="700" fill="#A8781F" letter-spacing="1.6">04</text>
+      <text x="644" y="66" font-size="14" fill="#14161A" font-weight="500">Nullify</text>
+      <text x="644" y="88" font-size="10.5" fill="#3A3F46">Pool marks the nullifier</text>
+      <text x="644" y="102" font-size="10.5" fill="#3A3F46">spent, blocking a second</text>
+      <text x="644" y="116" font-size="10.5" fill="#3A3F46">withdrawal of the note.</text>
+      <text x="644" y="138" font-size="9" fill="#A8781F" font-weight="600" letter-spacing="0.4">LINK BROKEN</text>
+    </g>
+    <line x1="188" y1="84" x2="206" y2="84" stroke="#C8973F" stroke-width="1.2" marker-end="url(#ar)"/>
+    <line x1="396" y1="84" x2="414" y2="84" stroke="#C8973F" stroke-width="1.2" marker-end="url(#ar)"/>
+    <line x1="604" y1="84" x2="622" y2="84" stroke="#C8973F" stroke-width="1.2" marker-end="url(#ar)"/>
+  </g>
+  <line x1="4" y1="176" x2="816" y2="176" stroke="#DCD6C9"/>
+  <text x="4" y="196" font-size="9" fill="#6B717A" letter-spacing="1.4">THE ANONYMITY SET IS EVERY UNSPENT NOTE OF THE SAME DENOMINATION IN THE POOL</text>
+  <text x="4" y="212" font-size="10" fill="#3A3F46">From the chain's perspective a withdrawal could have originated from any of them. The larger the pool, the weaker any correlation.</text>
+</svg>
+<figcaption><b>Figure 1.</b> The four-step protocol lifecycle. Steps 1–4 are sufficient for
+privacy and insufficient for adoption; §7.2 describes the three components that carry the user
+experience, none of which is trusted with funds or secrets.</figcaption>
+</figure>
+
+<h3><span class="n">4.1</span>Parties</h3>
+
+<table class="t">
+  <tr><th style="width:20%">Party</th><th>Role</th><th style="width:26%">Trusted for</th></tr>
+  <tr><td><strong>Sender</strong></td><td>Generates the note secret, computes the commitment, deposits, and seals the note payload to the recipient's encryption key.</td><td>Correct generation of their own note. Nothing else.</td></tr>
+  <tr><td><strong>Recipient</strong></td><td>Decrypts the note, fetches a witness, proves membership in-browser, and submits the withdraw.</td><td>Custody of their own secret.</td></tr>
+  <tr><td><strong>Pool contract</strong></td><td>Custody, proof verification, nullifier set, token registry.</td><td>Safety. This is the only safety-critical on-chain component.</td></tr>
+  <tr><td><strong>Indexer</strong></td><td>Watches <code>Deposit</code> events, maintains the tree, posts roots, serves witnesses.</td><td>Liveness only. Cannot forge a leaf or learn a secret.</td></tr>
+  <tr><td><strong>Backend</strong></td><td>Wallet auth, <code>@username</code> resolution, encrypted inbox storage and delivery.</td><td>Liveness and metadata only. Holds ciphertext, never plaintext.</td></tr>
+  <tr><td><strong>Contract owner</strong></td><td>Token registry administration, verifier and root-manager replacement, pause.</td><td>Availability and correct upgrade. Has no withdrawal authority.</td></tr>
+</table>
+
+<h3><span class="n">4.2</span>Key material</h3>
+
+<p>Each user holds two independent keypairs, deliberately separated by function:</p>
+
+<ul class="dash">
+  <li>An ordinary <strong>EVM wallet keypair</strong>, used to sign transactions and to
+  authenticate to the backend via <code>personal_sign</code>. This key is public-facing and is
+  assumed to be linkable to the user.</li>
+  <li>A <strong>Hushh encryption keypair</strong> <code>(sk_h, pk_h)</code>, used only to seal
+  and open note payloads. <code>pk_h</code> is published in the username registry;
+  <code>sk_h</code> never leaves the client. It is deterministically derived from a signature
+  over a fixed domain-separation string so that it is recoverable from the wallet alone, with
+  no separate backup:</li>
+</ul>
+
+<pre><span class="c"># deterministic derivation of the Hushh encryption key</span>
+sig     = wallet.personal_sign("hushh-protocol/v1/encryption-key")
+seed    = SHA-256(sig)
+sk_h    = clamp_x25519(seed)
+pk_h    = X25519_base_mul(sk_h)</pre>
+
+<div class="box">
+  <span class="label">Consequence of this derivation</span>
+  <p>Losing the wallet loses the ability to open <em>future</em> notes but not the funds in
+  already-decrypted notes, provided the note secrets were retained. Conversely, a wallet
+  compromise exposes correspondence, not the pool. The separation is intentional: the key that
+  can spend and the key that can read are different keys with different exposure profiles.</p>
+</div>
+
+<h3><span class="n">4.3</span>The note</h3>
+
+<p>A note is the unit of value in the pool. It exists in three representations, and the
+distinction between them is where most confusion about shielded pools originates.</p>
+
+<table class="t">
+  <tr><th style="width:22%">Representation</th><th>Contents</th><th style="width:24%">Where it lives</th></tr>
+  <tr><td><strong>Plaintext note</strong></td><td><code>(secret, recipientDigest, amount, token)</code></td><td>Sender's browser at creation; recipient's browser after decryption. Never anywhere else.</td></tr>
+  <tr><td><strong>Commitment</strong></td><td><code>C = H₄(secret, recipientDigest, amount, tokenHash)</code></td><td>On-chain, as an event field and a tree leaf. Reveals nothing about its preimage.</td></tr>
+  <tr><td><strong>Sealed payload</strong></td><td><code>Enc(pk_h, plaintext note)</code></td><td>Backend inbox, as opaque ciphertext.</td></tr>
+</table>
+
+<p>The <code>recipientDigest</code> is a field element that binds the note to its intended
+payout. In v1 it is derived from the recipient's wallet address; the P1 upgrade replaces this
+with a per-payment stealth digest derived via ECDH, so that repeat payments to the same person
+no longer share an on-chain tag. The circuit is unchanged by that upgrade because it treats the
+digest as an opaque public input.</p>
+
+<h3><span class="n">4.4</span>Algorithms</h3>
+
+<p>The protocol is specified as four algorithms. <code>Setup</code> runs once per deployment;
+the rest run once per payment.</p>
+
+<pre><b>Setup</b>(1^λ) → (pk, vk, addr)
+  1. (pk, vk) ← Groth16.KeyGen(R_withdraw)        <span class="c"># §5.1</span>
+  2. deploy WithdrawVerifier(vk)
+  3. deploy MerkleRootManager(window = 64)
+  4. deploy BulletPool(verifier, rootManager)
+  5. tree T ← empty Poseidon tree, depth 20
+  6. rootManager.postRoot(root(T))                <span class="c"># empty-tree root</span>
+
+<b>Deposit</b>(pk_h^recipient, amount, token) → (C, note)
+  1. secret ←$ F                                  <span class="c"># 254-bit, client-side CSPRNG</span>
+  2. recipientDigest ← Digest(recipient)
+  3. tokenHash ← uint256(uint160(token))
+  4. C ← H₄(secret, recipientDigest, amount, tokenHash)
+  5. assert token ∈ BulletPool.registry
+  6. assert amount ∈ DENOMINATIONS
+  7. ERC20(token).approve(BulletPool, amount)
+  8. BulletPool.deposit(token, amount, C)         <span class="c"># emits Deposit(C, leafIndex, …)</span>
+  9. ct ← Enc(pk_h^recipient, (secret, recipientDigest, amount, token))
+ 10. POST /notes { commitment: C, ciphertext: ct }
+     <span class="c"># the plaintext note is discarded by the sender after this point</span>
+
+<b>Index</b>()                                        <span class="c"># continuous, off-chain</span>
+  on Deposit(C, leafIndex) at block b:
+  1. wait until confirmations(b) ≥ K
+  2. assert leafIndex = |T|                       <span class="c"># strict ordering; else resync</span>
+  3. T.insert(C)
+  4. rootManager.postRoot(root(T))                <span class="c"># relayer key</span>
+
+<b>Withdraw</b>(note, recipientAddr) → tx
+  1. ct ← GET /notes ; note ← Dec(sk_h, ct)       <span class="c"># in browser</span>
+  2. (path, indices, root) ← GET /witness/:C
+  3. assert rootManager.isKnownRoot(root)
+  4. nullifier ← H₁(note.secret)
+  5. π ← Groth16.Prove(pk, x, w) where
+        x = [root, nullifier, recipientDigest, amount, tokenHash]
+        w = [secret, path[20], indices[20]]
+  6. BulletPool.withdraw(π, root, nullifier,
+        recipientDigest, recipientAddr, token, amount)
+  7. PATCH /notes/:id/claim                       <span class="c"># UI bookkeeping only</span></pre>
+
+<div class="box brass">
+  <span class="label">The invariant that produces unlinkability</span>
+  <p>Compare the on-chain footprints. <code>Deposit</code> publishes
+  <code>(C, leafIndex, token, amount)</code> and is signed by the sender.
+  <code>Withdraw</code> publishes <code>(nullifier, recipient, token, amount, root, π)</code>
+  and may be signed by anyone. The intersection of these two sets is
+  <code>(token, amount)</code> — which is shared with every other note of that denomination —
+  and <code>root</code>, which is shared with every note in the tree. <em>C never appears in a
+  withdraw. The nullifier never appears in a deposit.</em> There is no field to join on.</p>
+</div>
+
+<h3><span class="n">4.5</span>Denominations</h3>
+
+<p>Amounts are quantised to a small preset ladder, currently 1 / 10 / 50 / 100 USDC in base
+units of 10<sup>6</sup>. Larger payments are composed of several notes, each deposited
+separately and each withdrawable separately.</p>
+
+<p>The reason is amount-matching resistance. If arbitrary amounts were permitted, a withdrawal
+of 4,317.62 USDC would identify its deposit uniquely regardless of the cryptography between
+them; the anonymity set would collapse to one. Quantisation forces every note of a given size
+into a single indistinguishable class. The cost is a UX quantisation and a larger number of
+transactions for large payments, and a second-order leak discussed in §9.2: composing an
+unusual total from an unusual multiset of denominations is itself a fingerprint.</p>
+<!-- ============ 5 ============ -->
+<h2><span class="num">Section 05</span>The withdraw circuit</h2>
+
+<p class="lede">Only the withdraw path requires a circuit. A deposit is a commitment, an ERC-20
+transfer, and an event — all publicly verifiable without zero knowledge. Halving the circuit
+surface this way is the single largest reduction in audit burden available to a note-pool
+design.</p>
+
+<h3><span class="n">5.1</span>The relation</h3>
+
+<p>Let <code>R_withdraw</code> be the relation containing pairs <code>(x, w)</code> where the
+public statement <code>x</code> and private witness <code>w</code> are</p>
+
+<div class="math">x = (root, nullifier, recipientDigest, amount, tokenHash)<br>
+w = (secret, pathElements[20], pathIndices[20])</div>
+
+<p>and <code>(x, w) ∈ R_withdraw</code> if and only if all three of the following hold
+simultaneously:</p>
+
+<div class="defn">
+  <div class="h">C1 · Correct derivation</div>
+  <p><code>C = H₄(secret, recipientDigest, amount, tokenHash)</code>. The commitment is the
+  Poseidon hash of the private secret together with the three public note attributes.</p>
+</div>
+<div class="defn">
+  <div class="h">C2 · Membership</div>
+  <p>Hashing <code>C</code> upward along <code>pathElements</code> with ordering given by
+  <code>pathIndices</code> reproduces <code>root</code>. Formally, with <code>h₀ = C</code>
+  and for <code>i ∈ [0,20)</code>:<br>
+  <code>h_{i+1} = H₂(indices[i] ? (pathElements[i], h_i) : (h_i, pathElements[i]))</code>,
+  and <code>h₂₀ = root</code>.</p>
+</div>
+<div class="defn">
+  <div class="h">C3 · Nullifier binding</div>
+  <p><code>nullifier = H₁(secret)</code>, using the <em>same</em> secret witnessed in C1. This
+  is what makes double-spending impossible: a note has exactly one nullifier, deterministically,
+  and it cannot be spent under a different one.</p>
+</div>
+
+<p>The withdraw is accepted on-chain iff a Groth16 proof for this relation verifies against
+the locked public inputs, the root is inside the acceptance window, and the nullifier is
+unspent (§6.4).</p>
+
+<figure>
+<svg viewBox="0 0 820 250" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <marker id="ar2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,1 L7,4 L0,7" fill="none" stroke="#C8973F" stroke-width="1.2"/>
+    </marker>
+  </defs>
+  <rect x="4" y="16" width="300" height="196" fill="#FDFCFA" stroke="#DCD6C9"/>
+  <text x="22" y="42" font-size="9" font-weight="700" fill="#6B717A" letter-spacing="1.5">PRIVATE WITNESS · NEVER REVEALED</text>
+  <text x="22" y="72" font-size="12.5" fill="#14161A" font-family="'JetBrains Mono',monospace">secret</text>
+  <text x="22" y="94" font-size="12.5" fill="#14161A" font-family="'JetBrains Mono',monospace">pathElements[20]</text>
+  <text x="22" y="116" font-size="12.5" fill="#14161A" font-family="'JetBrains Mono',monospace">pathIndices[20]</text>
+  <line x1="22" y1="134" x2="284" y2="134" stroke="#E9E4D9"/>
+  <text x="22" y="156" font-size="10.5" fill="#3A3F46">These values exist only in the recipient's</text>
+  <text x="22" y="171" font-size="10.5" fill="#3A3F46">browser memory during proof generation.</text>
+  <text x="22" y="186" font-size="10.5" fill="#3A3F46">They are never transmitted, never logged,</text>
+  <text x="22" y="201" font-size="10.5" fill="#3A3F46">and not recoverable from the proof.</text>
+
+  <g>
+    <line x1="312" y1="114" x2="380" y2="114" stroke="#C8973F" stroke-width="1.4" marker-end="url(#ar2)"/>
+    <rect x="322" y="90" width="86" height="0" fill="none"/>
+    <text x="330" y="106" font-size="10.5" font-weight="600" fill="#A8781F">Groth16</text>
+  </g>
+
+  <rect x="424" y="16" width="392" height="196" fill="#FAF3E4" stroke="#E8D7AE"/>
+  <text x="444" y="42" font-size="9" font-weight="700" fill="#A8781F" letter-spacing="1.5">PUBLIC INPUTS · VERIFIED ON-CHAIN · ORDER LOCKED</text>
+  <text x="444" y="72" font-size="12.5" fill="#14161A" font-family="'JetBrains Mono',monospace">root</text>
+  <text x="620" y="72" font-size="10" fill="#6B717A">must be in the 64-root window</text>
+  <text x="444" y="94" font-size="12.5" fill="#14161A" font-family="'JetBrains Mono',monospace">nullifier</text>
+  <text x="620" y="94" font-size="10" fill="#6B717A">must be unspent</text>
+  <text x="444" y="116" font-size="12.5" fill="#14161A" font-family="'JetBrains Mono',monospace">recipientDigest</text>
+  <text x="620" y="116" font-size="10" fill="#6B717A">binds the payout address</text>
+  <text x="444" y="138" font-size="12.5" fill="#14161A" font-family="'JetBrains Mono',monospace">amount</text>
+  <text x="620" y="138" font-size="10" fill="#6B717A">must match a denomination</text>
+  <text x="444" y="160" font-size="12.5" fill="#14161A" font-family="'JetBrains Mono',monospace">tokenHash</text>
+  <text x="620" y="160" font-size="10" fill="#6B717A">must be a registered token</text>
+  <line x1="444" y1="176" x2="796" y2="176" stroke="#E8D7AE"/>
+  <text x="444" y="198" font-size="11" fill="#3A3F46">The verifier learns that <tspan font-style="italic">a</tspan> valid note exists. Not <tspan font-style="italic">which</tspan> one.</text>
+
+  <text x="4" y="238" font-size="10" fill="#6B717A">The commitment C is a private intermediate. It is computed inside the circuit and never appears in the withdraw transaction.</text>
+</svg>
+<figcaption><b>Figure 2.</b> Circuit interface. The proof reveals membership without revealing
+the leaf. Note that <code>C</code> is deliberately absent from the public inputs — publishing
+it would reconstruct the deposit-to-withdraw link and defeat the entire construction.</figcaption>
+</figure>
+
+<h3><span class="n">5.2</span>Constraint budget</h3>
+
+<p>Constraint count determines proving time, which determines whether client-side proving is
+viable, which determines whether the "no secret leaves the browser" invariant survives contact
+with product requirements. The dominant term is the Merkle path.</p>
+
+<table class="t">
+  <tr><th style="width:38%">Component</th><th>Count</th><th>Notes</th></tr>
+  <tr><td>Merkle path, 20 × Poseidon₂</td><td>dominant</td><td>Roughly 240 constraints per Poseidon₂ evaluation in the circomlib instantiation, so on the order of 5k constraints total. This is the term to optimise if depth changes.</td></tr>
+  <tr><td>Path index selectors, 20 × mux</td><td>small</td><td>Two constraints each for the conditional swap, plus one booleanity constraint per bit.</td></tr>
+  <tr><td>Commitment, 1 × Poseidon₄</td><td>small</td><td>Single evaluation.</td></tr>
+  <tr><td>Nullifier, 1 × Poseidon₁</td><td>small</td><td>Single evaluation.</td></tr>
+  <tr><td>Public-input plumbing</td><td>negligible</td><td>Equality constraints binding computed values to declared signals.</td></tr>
+</table>
+
+<p class="label" style="display:block;margin-top:-0.6em">Order-of-magnitude figures. Replace with measured values from <code>snarkjs r1cs info</code> after <code>zk:build</code>.</p>
+
+<p>Practically: a circuit in the low thousands of constraints proves in the low seconds in a
+desktop browser via snarkjs and WebAssembly, and in a small number of seconds on recent mobile
+hardware. This is the regime the design targets. A Keccak-based Merkle path, at roughly
+150k constraints for the same depth, would push proving into minutes and force the proving
+step onto a server, which would reintroduce the secret-handling trust that the architecture
+exists to eliminate.</p>
+
+<h3><span class="n">5.3</span>Public input encoding</h3>
+
+<p>All five public inputs are field elements. Two require explicit encoding discipline:</p>
+
+<pre>tokenHash       = uint256(uint160(tokenAddress))   <span class="c"># 160 bits, always &lt; r</span>
+recipientDigest = uint256(uint160(recipientAddr))  <span class="c"># v1; 160 bits, always &lt; r</span>
+amount          = raw ERC-20 base units            <span class="c"># e.g. 10_000_000 for 10 USDC</span>
+nullifier       = H₁(secret)                       <span class="c"># native field element</span>
+root            = Poseidon tree root               <span class="c"># native field element</span></pre>
+
+<p>Both address-derived values fit in 160 bits and therefore reduce trivially. The contract
+derives <code>tokenHash</code> identically in <code>BulletPool.tokenHashOf</code>, so the
+on-chain and in-circuit encodings cannot drift. When the P1 stealth digest replaces the v1
+address digest, <code>recipientDigest</code> becomes a full field element derived from an ECDH
+shared secret, and the reduction must then be performed explicitly and identically on both
+sides. That change is flagged here because a silent mismatch between an in-circuit reduction
+and an on-chain one produces proofs that verify against a statement other than the one the
+contract believes it is checking.</p>
+
+<h3><span class="n">5.4</span>Soundness-critical checks</h3>
+
+<p>Four checks carry the security of the circuit. Each is called out for adversarial testing
+rather than assumed correct.</p>
+
+<table class="t">
+  <tr><th style="width:26%">Check</th><th>Failure consequence</th></tr>
+  <tr><td><strong>Index bit booleanity</strong></td><td>An unconstrained <code>pathIndices[i]</code> lets a prover interpolate between the two hash orderings at level <code>i</code> and forge membership for a leaf that is not in the tree. This is the most frequently reported bug class in production Merkle circuits and must be tested with a witness containing a non-boolean index.</td></tr>
+  <tr><td><strong>Nullifier derivation</strong></td><td>If the nullifier is not constrained to derive from the <em>same</em> secret as the commitment, a note can be spent repeatedly under fresh nullifiers. This is a direct drain of the pool and is the highest-severity failure in the system.</td></tr>
+  <tr><td><strong>Public input ordering</strong></td><td>The order <code>[root, nullifier, recipientDigest, amount, tokenHash]</code> is locked. A mismatch between the circuit's declared order and the verifier contract's argument order silently changes the statement being proven.</td></tr>
+  <tr><td><strong>Verifier replacement</strong></td><td>The mock verifier used before <code>zk:build</code> accepts everything. Deployment scripts must assert that the live verifier is the generated <code>WithdrawVerifier</code> and not the mock. A status check for this is part of <code>pnpm status</code>.</td></tr>
+</table>
+
+<h3><span class="n">5.5</span>Non-malleability and front-running</h3>
+
+<p>A Groth16 proof sitting in the mempool is public data. Without countermeasures, an observer
+could lift it, resubmit it with their own address as the payout target, and steal the note by
+winning the ordering race. This class of attack has drained real deployments.</p>
+
+<p>Hushh forecloses it structurally rather than procedurally. <code>recipientDigest</code>,
+<code>amount</code>, and <code>tokenHash</code> are all inside the commitment (C1) and all
+public inputs of the proof. The contract checks that the <code>recipient</code> argument of
+<code>withdraw</code> matches the <code>recipientDigest</code> that the proof commits to.
+Changing the payout address changes a public input, which changes the statement, which
+invalidates the pairing check. There is nothing to steal: <em>a proof pays only the address it
+was generated for.</em></p>
+
+<p>The same argument covers value: an observer cannot up-value a withdrawal, because
+<code>amount</code> is likewise bound. And it covers token substitution, because
+<code>tokenHash</code> is bound. The proof is a bearer instrument only in the sense that anyone
+may <em>submit</em> it — which is a feature, since it permits a third-party relayer to pay gas
+on the recipient's behalf without being trusted with anything (§12).</p>
+<!-- ============ 6 ============ -->
+<h2><span class="num">Section 06</span>On-chain design</h2>
+
+<h3><span class="n">6.1</span>Contracts</h3>
+
+<table class="t">
+  <tr><th style="width:28%">Contract</th><th>Role</th><th style="width:20%">Criticality</th></tr>
+  <tr><td><code>BulletPool.sol</code></td><td>Custody of deposited notes; <code>deposit</code> and <code>withdraw</code> entrypoints; the nullifier set; an embedded registry of accepted tokens; pause; <code>Ownable2Step</code>; reentrancy guard.</td><td><strong>Safety-critical.</strong> All funds sit here.</td></tr>
+  <tr><td><code>MerkleRootManager.sol</code></td><td>Rolling window of the 64 most recent valid roots, with <code>isKnownRoot()</code> consulted at withdraw time.</td><td>Safety-critical for soundness of membership.</td></tr>
+  <tr><td><code>WithdrawVerifier.sol</code></td><td>Groth16 verifier generated by snarkjs at circuit build; replaces the mock after <code>zk:build</code>.</td><td>Safety-critical. Generated, not hand-written.</td></tr>
+  <tr><td><code>MockUSDC.sol</code></td><td>Test ERC-20 standing in for USDC during testnet operation.</td><td>Testnet only.</td></tr>
+</table>
+
+<p>Verifier and root manager are swappable by the owner. This is an availability affordance —
+a circuit rebuild or a root-manager fix should not require migrating custody — and it is also
+the largest owner-held power in the system. It is recorded honestly in the trust matrix
+(§8.5): an owner who installs a malicious verifier can drain the pool. Timelocking this
+replacement is a mainnet prerequisite.</p>
+
+<h3><span class="n">6.2</span>Why a 64-root window</h3>
+
+<p>A naive design accepts only the single current root. That design is broken in practice.
+Between the moment a recipient fetches their witness and the moment their transaction is
+mined, any <em>other</em> user's deposit advances the root and invalidates their proof. The
+recipient must re-fetch, re-prove, and resubmit — and loses the race again if the pool is
+still busy. The failure rate scales with pool activity, meaning the system fails hardest
+exactly when the anonymity set is strongest and users most want to transact.</p>
+
+<figure>
+<svg viewBox="0 0 820 190" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <text x="4" y="16" font-size="9" font-weight="700" fill="#6B717A" letter-spacing="1.5">ROOT HISTORY — OLDEST TO NEWEST</text>
+  <g>
+    <rect x="4" y="34" width="86" height="46" fill="#F4F1EA" stroke="#DCD6C9"/>
+    <text x="18" y="56" font-size="10.5" fill="#6B717A" font-family="'JetBrains Mono',monospace">root n−70</text>
+    <text x="18" y="72" font-size="9" fill="#8C3A2E">expired</text>
+    <rect x="98" y="34" width="86" height="46" fill="#F4F1EA" stroke="#DCD6C9"/>
+    <text x="112" y="56" font-size="10.5" fill="#6B717A" font-family="'JetBrains Mono',monospace">root n−65</text>
+    <text x="112" y="72" font-size="9" fill="#8C3A2E">expired</text>
+  </g>
+  <g>
+    <rect x="196" y="34" width="620" height="46" fill="#FAF3E4" stroke="#C8973F"/>
+    <text x="212" y="56" font-size="10.5" fill="#14161A" font-family="'JetBrains Mono',monospace">root n−63</text>
+    <text x="316" y="56" font-size="10.5" fill="#6B717A">· · ·</text>
+    <text x="376" y="56" font-size="10.5" fill="#14161A" font-family="'JetBrains Mono',monospace">root n−12</text>
+    <text x="486" y="56" font-size="10.5" fill="#6B717A">· · ·</text>
+    <text x="546" y="56" font-size="10.5" fill="#14161A" font-family="'JetBrains Mono',monospace">root n−1</text>
+    <text x="656" y="56" font-size="10.5" fill="#14161A" font-family="'JetBrains Mono',monospace">root n</text>
+    <text x="716" y="56" font-size="9.5" fill="#A8781F">(current)</text>
+    <text x="212" y="72" font-size="9" font-weight="600" fill="#A8781F" letter-spacing="1.2">64-ROOT ACCEPTANCE WINDOW — ANY PROOF AGAINST THESE VERIFIES</text>
+  </g>
+  <line x1="4" y1="104" x2="816" y2="104" stroke="#E9E4D9"/>
+  <text x="4" y="126" font-size="10.5" fill="#3A3F46">A recipient who fetched a witness at <tspan font-family="'JetBrains Mono',monospace" font-size="10">root n−12</tspan> can still withdraw after twelve further deposits have landed.</text>
+  <text x="4" y="144" font-size="10.5" fill="#3A3F46">Without the window, every concurrent deposit would invalidate every in-flight proof.</text>
+  <text x="4" y="172" font-size="10.5" fill="#3A3F46">The window is bounded rather than unbounded so that a root cannot be replayed indefinitely after the indexer set has changed.</text>
+</svg>
+<figcaption><b>Figure 3.</b> The rolling root window decouples proving from block timing.</figcaption>
+</figure>
+
+<p>Window sizing is a straightforward liveness calculation. Let <code>λ_d</code> be the deposit
+arrival rate and <code>T_p</code> the time from witness fetch to inclusion (proving plus
+signing plus block time). A proof survives if fewer than <code>W</code> deposits land during
+<code>T_p</code>. Under a Poisson arrival model the failure probability is</p>
+
+<div class="math">P[fail] = P[N(T_p) ≥ W] = 1 − Σ<sub>k&lt;W</sub> e<sup>−λ_d T_p</sup> (λ_d T_p)<sup>k</sup> / k!</div>
+
+<p>With <code>W = 64</code>, failure requires 64 deposits inside a single proving window. At
+demo volumes this is unreachable; at a sustained one deposit per second and a 20-second
+proving window, the expected count is 20 and failure remains rare. The parameter should be
+revisited if sustained deposit rate ever approaches <code>W / T_p</code>, and the cost of
+increasing it is bounded storage plus a slightly longer replay horizon.</p>
+
+<h3><span class="n">6.3</span>Withdraw validation order</h3>
+
+<p>The pool rejects the transaction unless every check passes, in this order. The ordering is
+not cosmetic.</p>
+
+<pre>1. isKnownRoot(root)              <span class="c"># root is inside the 64-entry window</span>
+2. !nullifiers[nullifier]         <span class="c"># the note has not already been spent</span>
+3. verifyProof(π, publicInputs)   <span class="c"># Groth16 pairing check, locked input order</span>
+4. registry[token] && amount ∈ DENOMINATIONS
+5. recipientDigest binds recipient
+   <span class="c">--- effects ---</span>
+6. nullifiers[nullifier] = true   <span class="c"># mark spent BEFORE the transfer</span>
+7. ERC20(token).transfer(recipient, amount)
+8. emit Withdrawal(nullifier, recipient)</pre>
+
+<p>Cheap checks precede the expensive pairing check so that malformed transactions fail early
+and cheaply. More importantly, step 6 precedes step 7: the nullifier is written before value
+moves, so a reentrant callback from a hostile token encounters a note that is already spent.
+This is checks-effects-interactions applied to the one state transition that matters, and it
+is enforced by a reentrancy guard as well, on the principle that the ordering argument should
+not be the only thing standing between the pool and a drain.</p>
+
+<h3><span class="n">6.4</span>Gas profile</h3>
+
+<table class="t">
+  <tr><th style="width:26%">Operation</th><th>Dominant cost</th><th style="width:24%">Indicative</th></tr>
+  <tr><td><code>deposit</code></td><td>ERC-20 <code>transferFrom</code>, one storage write for the leaf counter, one event.</td><td>~60–90k gas</td></tr>
+  <tr><td><code>withdraw</code></td><td>Groth16 pairing check via BN254 precompiles, one storage write for the nullifier, ERC-20 <code>transfer</code>, one event.</td><td>~280–350k gas</td></tr>
+  <tr><td><code>postRoot</code></td><td>One storage write into the ring buffer. Paid by the relayer, not the user.</td><td>~30–45k gas</td></tr>
+</table>
+
+<p class="label" style="display:block;margin-top:-0.6em">Indicative ranges based on typical BN254 Groth16 verification costs. Replace with measured values from a Hardhat gas report against the deployed build.</p>
+
+<p>The economically relevant observation is that <code>withdraw</code> is a <em>constant</em>
+cost, independent of pool size. A pool with a million notes verifies as cheaply as one with
+ten. Privacy therefore does not become more expensive as it becomes stronger — an unusual and
+favourable property, and the reason Groth16 was chosen over proof systems with better setup
+characteristics but logarithmic or linear verification.</p>
+
+<!-- ============ 7 ============ -->
+<h2><span class="num">Section 07</span>Off-chain infrastructure</h2>
+
+<p class="lede">Six layers, with a hard boundary between what runs on the client and what runs
+on a server. Every secret lives above the boundary. Every server below it is a liveness
+dependency and never a safety one.</p>
+
+<figure>
+<svg viewBox="0 0 820 396" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <!-- client zone -->
+  <rect x="4" y="18" width="812" height="118" fill="#FDFCFA" stroke="#14161A"/>
+  <text x="20" y="38" font-size="9" font-weight="700" fill="#14161A" letter-spacing="1.5">CLIENT · TRUSTED · SECRETS NEVER LEAVE</text>
+  <g>
+    <rect x="20" y="48" width="252" height="74" fill="#FFFFFF" stroke="#DCD6C9"/>
+    <text x="34" y="68" font-size="12" fill="#14161A" font-weight="500">Frontend · Next.js</text>
+    <text x="34" y="86" font-size="10" fill="#3A3F46">Send · Inbox · Lookout · Account</text>
+    <text x="34" y="100" font-size="10" fill="#3A3F46">Wallet connect and signing</text>
+    <text x="34" y="114" font-size="10" fill="#6B717A">Never reimplements crypto</text>
+  </g>
+  <g>
+    <rect x="284" y="48" width="252" height="74" fill="#FFFFFF" stroke="#DCD6C9"/>
+    <text x="298" y="68" font-size="12" fill="#14161A" font-weight="500">Proof SDK · TypeScript</text>
+    <text x="298" y="86" font-size="10" fill="#3A3F46">Secrets · commitments · nullifiers</text>
+    <text x="298" y="100" font-size="10" fill="#3A3F46">Merkle witness assembly</text>
+    <text x="298" y="114" font-size="10" fill="#3A3F46">Groth16 proving via snarkjs</text>
+  </g>
+  <g>
+    <rect x="548" y="48" width="252" height="74" fill="#FFFFFF" stroke="#DCD6C9"/>
+    <text x="562" y="68" font-size="12" fill="#14161A" font-weight="500">ZK Circuit · Circom</text>
+    <text x="562" y="86" font-size="10" fill="#3A3F46">BN254 · Groth16 · withdraw only</text>
+    <text x="562" y="100" font-size="10" fill="#3A3F46">Poseidon hash gadget</text>
+    <text x="562" y="114" font-size="10" fill="#3A3F46">Merkle membership + nullifier</text>
+  </g>
+
+  <!-- services zone -->
+  <rect x="4" y="152" width="812" height="98" fill="#F4F1EA" stroke="#DCD6C9" stroke-dasharray="3 3"/>
+  <text x="20" y="172" font-size="9" font-weight="700" fill="#6B717A" letter-spacing="1.5">OFF-CHAIN SERVICES · UNTRUSTED · LIVENESS ONLY</text>
+  <g>
+    <rect x="20" y="182" width="384" height="54" fill="#FFFFFF" stroke="#DCD6C9"/>
+    <text x="34" y="202" font-size="12" fill="#14161A" font-weight="500">Indexer</text>
+    <text x="34" y="219" font-size="10" fill="#3A3F46">Watches Deposit events · builds the Poseidon tree · postRoot()</text>
+    <text x="34" y="232" font-size="10" fill="#6B717A">GET /witness/:commitment — returns no secrets, never proves</text>
+  </g>
+  <g>
+    <rect x="416" y="182" width="384" height="54" fill="#FFFFFF" stroke="#DCD6C9"/>
+    <text x="430" y="202" font-size="12" fill="#14161A" font-weight="500">Backend</text>
+    <text x="430" y="219" font-size="10" fill="#3A3F46">Wallet auth · @username → address + Hushh key · encrypted inbox</text>
+    <text x="430" y="232" font-size="10" fill="#6B717A">No proving · no Merkle · no chain calls</text>
+  </g>
+
+  <!-- chain zone -->
+  <rect x="4" y="266" width="812" height="104" fill="#FAF3E4" stroke="#C8973F"/>
+  <text x="20" y="286" font-size="9" font-weight="700" fill="#A8781F" letter-spacing="1.5">ARC TESTNET · CHAIN ID 5042002 · SOURCE OF TRUTH</text>
+  <g>
+    <rect x="20" y="296" width="188" height="60" fill="#FFFFFF" stroke="#E8D7AE"/>
+    <text x="32" y="316" font-size="11.5" fill="#14161A" font-weight="500">BulletPool</text>
+    <text x="32" y="332" font-size="9.5" fill="#3A3F46">deposit / withdraw</text>
+    <text x="32" y="345" font-size="9.5" fill="#3A3F46">nullifier set · custody</text>
+  </g>
+  <g>
+    <rect x="218" y="296" width="188" height="60" fill="#FFFFFF" stroke="#E8D7AE"/>
+    <text x="230" y="316" font-size="11.5" fill="#14161A" font-weight="500">MerkleRootManager</text>
+    <text x="230" y="332" font-size="9.5" fill="#3A3F46">rolling window of 64 roots</text>
+    <text x="230" y="345" font-size="9.5" fill="#3A3F46">isKnownRoot()</text>
+  </g>
+  <g>
+    <rect x="416" y="296" width="188" height="60" fill="#FFFFFF" stroke="#E8D7AE"/>
+    <text x="428" y="316" font-size="11.5" fill="#14161A" font-weight="500">WithdrawVerifier</text>
+    <text x="428" y="332" font-size="9.5" fill="#3A3F46">Groth16 pairing check</text>
+    <text x="428" y="345" font-size="9.5" fill="#3A3F46">BN254 precompiles</text>
+  </g>
+  <g>
+    <rect x="614" y="296" width="186" height="60" fill="#FFFFFF" stroke="#E8D7AE"/>
+    <text x="626" y="316" font-size="11.5" fill="#14161A" font-weight="500">USDC · ERC-20</text>
+    <text x="626" y="332" font-size="9.5" fill="#3A3F46">fixed denominations</text>
+    <text x="626" y="345" font-size="9.5" fill="#3A3F46">6 decimals</text>
+  </g>
+  <text x="4" y="390" font-size="10" fill="#6B717A">Downward arrows carry proofs and public data only. No arrow in this diagram carries a secret.</text>
+</svg>
+<figcaption><b>Figure 4.</b> Layered architecture and trust zones. The boundary between the
+solid box and the dashed box is the security boundary of the entire system.</figcaption>
+</figure>
+
+<h3><span class="n">7.1</span>Indexer</h3>
+
+<p>The indexer watches <code>Deposit</code> events, inserts leaves in strict
+<code>leafIndex</code> order, and posts the resulting root using a dedicated relayer key. It
+exposes <code>/health</code>, <code>/root</code>, <code>/witness/:commitment</code>,
+<code>/deposit/:commitment</code>, and <code>/stats</code>. It never returns a secret and never
+generates a proof.</p>
+
+<p>Three operational properties matter more than they appear to:</p>
+
+<ul class="dash">
+  <li><strong>Strict ordering.</strong> The indexer asserts <code>leafIndex = |T|</code> before
+  every insert. A gap means events were missed, and the correct response is to resync from the
+  chain rather than to insert out of order, which would produce a root no honest party can
+  reproduce.</li>
+  <li><strong>Confirmation depth.</strong> Leaves are finalised only after <code>K</code>
+  confirmations, so a reorg cannot bake a reverted deposit into the tree. Arc's fast
+  deterministic finality keeps <code>K</code> small and therefore keeps deposit-to-withdrawable
+  latency short.</li>
+  <li><strong>Crash recovery.</strong> Tree state is persisted, and on restart the indexer
+  replays from the last finalised leaf. The tree is fully reconstructible from chain events
+  alone, which is what makes the next property possible.</li>
+</ul>
+
+<div class="box brass">
+  <span class="label">Why the indexer cannot forge a leaf</span>
+  <p>Every leaf is derived from a public <code>Deposit</code> event. Any party — a user, a
+  watchdog, a competitor — can independently rebuild the tree from the event log and check that
+  a posted root matches. A malicious indexer that inserts a fabricated leaf publishes a root
+  inconsistent with the chain's own history, and that inconsistency is detectable by anyone who
+  looks. The indexer's real power is <em>withholding</em>: it can decline to post roots or to
+  serve witnesses, stalling withdrawals. That is a liveness attack, and §12 addresses it by
+  making root posting permissionless.</p>
+</div>
+
+<h3><span class="n">7.2</span>Backend and the usability layer</h3>
+
+<p>Steps 1–4 of §4 are sufficient for privacy and insufficient for adoption. Three components
+carry the user experience, and the design constraint on all three is that none may be trusted
+with funds or secrets.</p>
+
+<table class="t">
+  <tr><th style="width:22%">Layer</th><th>Function</th><th style="width:26%">What it can see</th></tr>
+  <tr><td><strong>Username registry</strong></td><td>Resolves <code>@handle</code> to a wallet address and a Hushh encryption public key, so senders address humans rather than hex.</td><td>Public directory data only.</td></tr>
+  <tr><td><strong>Encrypted inbox</strong></td><td>Note payloads sealed to the recipient's Hushh public key, stored server-side as opaque ciphertext and delivered on login.</td><td>Ciphertext and routing metadata: who messaged whom, and when.</td></tr>
+  <tr><td><strong>Proof SDK</strong></td><td>Generates secrets, commitments and nullifiers; assembles Merkle witnesses; produces Groth16 proofs entirely in the browser.</td><td>Runs client-side only. Sees everything, transmits nothing.</td></tr>
+</table>
+
+<div class="box">
+  <span class="label">Backend invariant</span>
+  <p>The backend stores ciphertext and routing metadata. It never holds a secret, never
+  generates a proof, and cannot spend a note. <strong>A total compromise of the Hushh backend
+  leaks correspondence metadata. It does not leak funds and does not break on-chain
+  unlinkability.</strong> This sentence is the design constraint every backend feature is
+  checked against; a feature that would violate it is not built.</p>
+</div>
+
+<h3><span class="n">7.3</span>Note encryption</h3>
+
+<p>The sealed payload uses ephemeral-static X25519 key agreement with an AEAD, which gives
+sender anonymity within the ciphertext itself and forward secrecy against future compromise of
+the ephemeral key:</p>
+
+<pre>(esk, epk) ←$ X25519 keypair                    <span class="c"># fresh per note</span>
+shared     = X25519(esk, pk_h^recipient)
+key        = HKDF-SHA256(shared, info="hushh/v1/note")
+ct         = XChaCha20-Poly1305.Seal(key, nonce, note)
+payload    = epk ‖ nonce ‖ ct</pre>
+
+<p>The recipient scans their inbox, attempts decryption with <code>sk_h</code>, and keeps what
+opens. Note that the payload carries no sender identifier: the backend learns who <em>posted</em>
+a ciphertext from the authenticated session, but the ciphertext itself does not name a sender.
+A user who prefers not to leak that routing metadata can bypass the inbox entirely and deliver
+the payload out of band by copy-paste, which the SDK supports and which costs nothing in
+on-chain privacy.</p>
+
+<div class="box">
+  <span class="label">Key substitution, stated plainly</span>
+  <p>A malicious registry could serve its own <code>pk_h</code> in place of the intended
+  recipient's, and thereby read note payloads. It could not spend those notes, because
+  spending is gated by the on-chain proof against <code>recipientDigest</code>. For
+  high-value payments, verify the counterparty's key out of band. The v2 on-chain identity
+  registry (§12) removes this seam by moving handle-to-key binding on-chain, where
+  substitution is public and detectable.</p>
+</div>
+
+<h3><span class="n">7.4</span>SDK discipline</h3>
+
+<p>One rule, enforced without exception: <strong>the frontend calls the SDK and never
+reimplements cryptography.</strong> Poseidon, commitment derivation, nullifier derivation,
+witness assembly, and proving exist in exactly one place. A fix lands once, an audit has one
+target, and no UI change can silently alter a security-relevant computation. Convenience
+reimplementations in application code are the mechanism by which correct protocols become
+incorrect products.</p>
+<!-- ============ 8 ============ -->
+<h2><span class="num">Section 08</span>Security analysis</h2>
+
+<p class="lede">The question worth asking of any privacy system is not "is it encrypted" but
+"what does each party gain by defecting". This section defines the properties formally, sketches
+why they hold, and then answers that question party by party.</p>
+
+<h3><span class="n">8.1</span>Security properties</h3>
+
+<div class="defn">
+  <div class="h">P1 · Completeness</div>
+  <p>For every honestly generated note whose commitment has been inserted under a root still
+  inside the acceptance window, the recipient can produce a proof that <code>withdraw</code>
+  accepts. Follows from Groth16 completeness and the window-sizing argument of §6.2.</p>
+</div>
+
+<div class="defn">
+  <div class="h">P2 · Balance (no theft, no inflation)</div>
+  <p>No probabilistic polynomial-time adversary can cause the pool to pay out more than the
+  total deposited, except with probability <code>negl(λ)</code>. Equivalently: each accepted
+  <code>withdraw</code> can be mapped injectively to a distinct prior <code>deposit</code> of
+  the same token and amount.</p>
+  <p><em>Sketch.</em> An accepting proof yields, by knowledge soundness (A1), an extractable
+  witness <code>(secret, path, indices)</code> satisfying C1–C3. C2 places
+  <code>C = H₄(secret, ·)</code> under a root in the window. Roots are posted only by insertion
+  of observed <code>Deposit</code> commitments, so <code>C</code> corresponds to a real
+  deposit unless the adversary found a Poseidon collision (A2) or the setup was compromised
+  (A3). Injectivity follows from C3 plus the nullifier set: two accepted withdrawals mapping
+  to the same deposit would require the same <code>secret</code>, hence the same
+  <code>H₁(secret)</code>, hence a repeat nullifier, which step 2 of §6.3 rejects.</p>
+</div>
+
+<div class="defn">
+  <div class="h">P3 · Double-spend resistance</div>
+  <p>A note can be withdrawn at most once. Immediate from P2's injectivity argument: the
+  nullifier is a deterministic function of the secret, so a second spend necessarily collides
+  with the first in the spent set.</p>
+</div>
+
+<div class="defn">
+  <div class="h">P4 · Deposit–withdraw unlinkability</div>
+  <p>Consider an adversary who observes the full chain, chooses two honest deposits
+  <code>D₀</code> and <code>D₁</code> of the same token and denomination, and is then shown a
+  withdrawal spending <code>D_b</code> for uniform <code>b</code>. The adversary's advantage in
+  guessing <code>b</code> is negligible with respect to on-chain data alone.</p>
+  <p><em>Sketch.</em> The withdraw transaction publishes <code>(root, nullifier,
+  recipientDigest, amount, tokenHash, π)</code>. Of these, <code>amount</code> and
+  <code>tokenHash</code> are equal for <code>D₀</code> and <code>D₁</code> by construction, and
+  <code>root</code> contains both. <code>nullifier = H₁(secret)</code> is independent of the
+  commitment's other inputs and, under A2, is unlinkable to <code>C</code> without
+  <code>secret</code>. <code>π</code> is zero-knowledge, so it is simulatable from
+  <code>x</code> alone. Hence the adversary's view is identically distributed for
+  <code>b = 0</code> and <code>b = 1</code>.</p>
+  <p><strong>The qualifier "on-chain data alone" is doing real work.</strong> P4 says nothing
+  about timing correlation, network-level observation, off-chain metadata, or the size of the
+  candidate set. Those are treated quantitatively in §9 and honestly in §10.</p>
+</div>
+
+<div class="defn">
+  <div class="h">P5 · Payout binding (non-malleability)</div>
+  <p>A proof observed before inclusion cannot be modified to pay a different address, a
+  different amount, or a different token. Immediate from §5.5: all three are public inputs
+  bound inside the commitment, so altering any of them invalidates the pairing check.</p>
+</div>
+
+<h3><span class="n">8.2</span>What each party can do</h3>
+
+<table class="t">
+  <tr><th style="width:20%">Party</th><th class="c" style="width:11%">Steal</th><th class="c" style="width:11%">Censor</th><th class="c" style="width:13%">Deanonymise</th><th>Notes</th></tr>
+  <tr>
+    <td>Indexer / relayer</td><td class="c no">No</td><td class="c yes">Yes</td><td class="c no">No</td>
+    <td>Can withhold roots or witnesses, stalling withdrawals indefinitely. Cannot forge a leaf: the pool's own <code>Deposit</code> log constrains what any honest reconstruction of the tree can contain, and inconsistency is publicly detectable.</td>
+  </tr>
+  <tr>
+    <td>Backend</td><td class="c no">No</td><td class="c yes">Yes</td><td class="c part">Partial</td>
+    <td>Holds ciphertext and routing metadata. Learns who messages whom and when. Does not learn amounts, secrets, or the on-chain link. Can refuse to serve the inbox, which is why local note export exists.</td>
+  </tr>
+  <tr>
+    <td>Contract owner</td><td class="c no">No*</td><td class="c part">Registry</td><td class="c no">No</td>
+    <td>Can add or remove accepted tokens and pause. *Can replace the verifier, and a malicious verifier drains the pool. This is the largest owner power in the system and is the reason a timelock is a mainnet prerequisite.</td>
+  </tr>
+  <tr>
+    <td>Trusted setup</td><td class="c yes">If retained</td><td class="c no">No</td><td class="c no">No</td>
+    <td>Toxic-waste retention permits forged proofs, which is theft from the pool. It does <em>not</em> permit deanonymising users — a critical asymmetry, since it means a bad ceremony risks funds but not the safety of people who used the system for privacy.</td>
+  </tr>
+  <tr>
+    <td>Chain validators</td><td class="c no">No</td><td class="c yes">Yes</td><td class="c no">No</td>
+    <td>Standard L1 censorship assumptions. Proof contents remain opaque to block producers.</td>
+  </tr>
+  <tr>
+    <td>Network observer</td><td class="c no">No</td><td class="c no">No</td><td class="c part">Timing</td>
+    <td>Can correlate deposit and withdrawal timing in a thin pool, and can correlate IP addresses across deposit and withdraw if the user does not change network. Mitigated by pool depth, by delay, and by transport-level precautions.</td>
+  </tr>
+</table>
+
+<div class="box brass">
+  <span class="label">The invariant that matters</span>
+  <p>Custody and unlinkability rest exclusively on the contracts and the circuit. Every
+  off-chain component is a liveness dependency. A malicious indexer and a malicious backend,
+  <em>colluding</em>, can stop Hushh from working. They cannot take a user's funds and cannot
+  reconstruct the deposit-to-withdraw link.</p>
+</div>
+
+<h3><span class="n">8.3</span>Attack catalogue</h3>
+
+<table class="t">
+  <tr><th style="width:26%">Attack</th><th>Mitigation</th></tr>
+  <tr><td><strong>Double withdrawal</strong></td><td>The nullifier is deterministically derived from the secret inside the circuit. Two withdrawals of one note necessarily produce the same nullifier, and the second is rejected by the spent-set check before the pairing check even runs.</td></tr>
+  <tr><td><strong>Proof front-running</strong></td><td><code>recipientDigest</code> is a locked public input bound inside the commitment. A proof lifted from the mempool pays only the address it was generated for; redirecting it invalidates the pairing check (§5.5).</td></tr>
+  <tr><td><strong>Forged Merkle root</strong></td><td>Roots are constrained by observable on-chain <code>Deposit</code> events. Any party can independently rebuild the tree and detect a root inconsistent with the event log. Detection is public; v2 makes posting permissionless so detection also has a remedy.</td></tr>
+  <tr><td><strong>Reentrancy on withdraw</strong></td><td>The nullifier is written before the ERC-20 transfer, so a reentrant callback from a hostile token encounters an already-spent note. A reentrancy guard is applied in addition, not instead.</td></tr>
+  <tr><td><strong>Amount fingerprinting</strong></td><td>Fixed denominations only. A withdrawal of a non-standard amount — the classic correlation vector — is not expressible in the system.</td></tr>
+  <tr><td><strong>Backend key substitution</strong></td><td>A malicious registry could serve its own encryption key and intercept ciphertext, though not funds. Verify keys out of band for high-value payments; the v2 on-chain registry closes the seam (§7.3).</td></tr>
+  <tr><td><strong>Malicious token in registry</strong></td><td>Only owner-registered tokens are accepted. A fee-on-transfer or rebasing token would break the fixed-denomination invariant, so the registry admits only standard-behaviour ERC-20s. This is an owner responsibility and is listed as such.</td></tr>
+  <tr><td><strong>Weak client randomness</strong></td><td>The note secret is sampled from the browser CSPRNG. A predictable secret is a stealable note, and this is entirely a client-side property — no amount of on-chain design compensates for it. The SDK is the only place secrets are generated, which is why §7.4 forbids reimplementation.</td></tr>
+  <tr><td><strong>Denial by root withholding</strong></td><td>Currently unmitigated: a stalled relayer blocks all withdrawals. Funds are not at risk and the stall ends when posting resumes. Permissionless posting (v2) is the structural fix.</td></tr>
+  <tr><td><strong>Dust and probe deposits</strong></td><td>An adversary who deposits many notes to inflate their share of the anonymity set reduces the effective set for everyone else (§9.1). This is inherent to pooled anonymity and is mitigated only by genuine volume.</td></tr>
+</table>
+
+<!-- ============ 9 ============ -->
+<h2><span class="num">Section 09</span>Anonymity as a quantity</h2>
+
+<p class="lede">P4 is a statement about cryptography. What a user actually experiences is a
+number: how many other notes could plausibly have been the source of their withdrawal. That
+number is smaller than the pool size, and it decays with time. Users deserve the formula, not
+a reassurance.</p>
+
+<h3><span class="n">9.1</span>The effective anonymity set</h3>
+
+<p>Naively, the anonymity set is every unspent note in the pool. Three effects shrink it:</p>
+
+<p><strong>Denomination partitioning.</strong> A 50 USDC withdrawal can only have come from a
+50 USDC deposit. The pool is partitioned by <code>(token, denomination)</code> and a user's set
+is their partition, not the whole tree. A ladder of four denominations across two tokens
+partitions the pool eight ways.</p>
+
+<p><strong>Ordering.</strong> Only notes deposited <em>before</em> the withdrawal are
+candidates.</p>
+
+<p><strong>Adversary-owned notes.</strong> An observer who deposited some of the notes in the
+partition knows those are not the source. If an adversary controls a fraction <code>f</code> of
+the partition, the honest set shrinks by that fraction.</p>
+
+<p>Writing <code>N_d(t)</code> for the number of unspent notes of denomination <code>d</code> at
+time <code>t</code>, the effective set is</p>
+
+<div class="math">A<sub>eff</sub> = (1 − f) · N<sub>d</sub>(t)</div>
+
+<p>and the observer's uncertainty is properly measured not by the count but by the Shannon
+entropy of their posterior over candidates:</p>
+
+<div class="math">H = − Σ<sub>i</sub> p<sub>i</sub> log₂ p<sub>i</sub> &nbsp;&nbsp;bits, with H = log₂ A<sub>eff</sub> only when the posterior is uniform</div>
+
+<p>The posterior is uniform only if the observer has no timing information. They almost always
+have timing information.</p>
+
+<h3><span class="n">9.2</span>Timing decay</h3>
+
+<p>Suppose an observer models the delay between deposit and withdrawal as a distribution
+<code>g(Δ)</code>. Seeing a withdrawal at time <code>t</code>, they assign each candidate
+deposit at time <code>t_i</code> the weight <code>p_i ∝ g(t − t_i)</code>. If users withdraw
+promptly, <code>g</code> is sharply peaked and the posterior concentrates on a handful of
+recent deposits — the entropy collapses even though the raw count is large.</p>
+
+<figure>
+<svg viewBox="0 0 820 240" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <!-- axes -->
+  <line x1="60" y1="196" x2="790" y2="196" stroke="#14161A"/>
+  <line x1="60" y1="24" x2="60" y2="196" stroke="#14161A"/>
+  <text x="60" y="222" font-size="9.5" fill="#6B717A">immediate</text>
+  <text x="272" y="222" font-size="9.5" fill="#6B717A">minutes</text>
+  <text x="470" y="222" font-size="9.5" fill="#6B717A">hours</text>
+  <text x="700" y="222" font-size="9.5" fill="#6B717A">days</text>
+  <text x="360" y="238" font-size="9" fill="#6B717A" letter-spacing="1.3">DELAY BETWEEN DEPOSIT AND WITHDRAWAL</text>
+  <text x="6" y="120" font-size="9" fill="#6B717A" letter-spacing="1.3" transform="rotate(-90 16 120)">ENTROPY (BITS)</text>
+  <!-- gridlines -->
+  <line x1="60" y1="152" x2="790" y2="152" stroke="#E9E4D9"/>
+  <line x1="60" y1="108" x2="790" y2="108" stroke="#E9E4D9"/>
+  <line x1="60" y1="64" x2="790" y2="64" stroke="#E9E4D9"/>
+  <text x="42" y="156" font-size="9" fill="#6B717A" text-anchor="end">2</text>
+  <text x="42" y="112" font-size="9" fill="#6B717A" text-anchor="end">6</text>
+  <text x="42" y="68" font-size="9" fill="#6B717A" text-anchor="end">10</text>
+  <!-- ceiling -->
+  <line x1="60" y1="44" x2="790" y2="44" stroke="#8C3A2E" stroke-dasharray="4 3"/>
+  <text x="600" y="38" font-size="9.5" fill="#8C3A2E">ceiling: log₂ of the denomination partition</text>
+  <!-- deep pool curve -->
+  <path d="M60,190 C160,150 250,90 400,62 C540,50 660,46 790,45" fill="none" stroke="#A8781F" stroke-width="2"/>
+  <text x="470" y="86" font-size="10.5" fill="#A8781F" font-weight="600">deep pool</text>
+  <!-- thin pool curve -->
+  <path d="M60,193 C160,182 260,168 400,150 C540,138 660,132 790,130" fill="none" stroke="#3A3F46" stroke-width="2" stroke-dasharray="5 3"/>
+  <text x="470" y="146" font-size="10.5" fill="#3A3F46" font-weight="600">thin pool (demo volume)</text>
+  <text x="72" y="182" font-size="10" fill="#8C3A2E">near-zero entropy: the withdrawal is</text>
+  <text x="72" y="194" font-size="10" fill="#8C3A2E">effectively self-identifying</text>
+</svg>
+<figcaption><b>Figure 5.</b> Qualitative shape of observer uncertainty against withdrawal
+delay. Waiting is not a decoration; it is the single most effective control a user has, and it
+is free. In a thin pool no amount of waiting reaches a strong guarantee — the curve is bounded
+above by the size of the denomination partition.</figcaption>
+</figure>
+
+<h3><span class="n">9.3</span>What this means for a user</h3>
+
+<table class="t">
+  <tr><th style="width:30%">Control</th><th>Effect</th></tr>
+  <tr><td><strong>Wait before withdrawing</strong></td><td>Flattens the observer's timing posterior. The strongest free control available. Withdrawing seconds after a deposit lands is close to publishing the link.</td></tr>
+  <tr><td><strong>Use common denominations</strong></td><td>Keeps you in the largest partition. An unusual denomination is a small partition and therefore a small set, regardless of the tree's total size.</td></tr>
+  <tr><td><strong>Vary the composition of large payments</strong></td><td>Paying 230 USDC as 2×100 + 3×10 at one instant is a recognisable multiset. Spreading composition over time and mixing sizes blunts it.</td></tr>
+  <tr><td><strong>Withdraw to a fresh address</strong></td><td>Prevents the payout address itself from re-linking the payment to an identity that the pool just spent effort concealing.</td></tr>
+  <tr><td><strong>Separate network context</strong></td><td>The protocol conceals the on-chain link, not the IP address. Depositing and withdrawing from the same network fingerprint gives an observer a correlation the chain does not.</td></tr>
+  <tr><td><strong>Deliver out of band</strong></td><td>Skipping the inbox for copy-paste delivery removes the backend's view of correspondence metadata at the cost of manual handling.</td></tr>
+</table>
+
+<div class="box">
+  <span class="label">The uncomfortable summary</span>
+  <p>At demo-stage volume the anonymity set is thin and a determined observer with timing data
+  can narrow it substantially. The cryptography is not the limiting factor and improving it
+  would not help. Volume is the limiting factor. This is a property of every pooled-anonymity
+  system, and any project claiming otherwise at launch volume is misrepresenting the
+  mathematics.</p>
+</div>
+<!-- ============ 10 ============ -->
+<h2><span class="num">Section 10</span>Honest limits</h2>
+
+<p class="lede">Stated without hedging, because users calibrate real-world risk against these
+sentences. Each item is a property Hushh v1 does not have.</p>
+
+<div class="dash">
+<ul class="dash">
+  <li><strong>Unlinkability, not confidentiality.</strong> Deposit and withdraw are unlinked.
+  Amounts are standardised into fixed denominations, not encrypted. A 50 USDC note is a visible
+  50 USDC ERC-20 transfer. This is not a full shielded pool with hidden balances.</li>
+
+  <li><strong>Anonymity scales with pool size.</strong> A thin pool is a weak anonymity set. At
+  demo-stage volume the set is small, and a determined observer with timing data may narrow it
+  substantially (§9).</li>
+
+  <li><strong>Root posting is permissioned.</strong> A single relayer posts roots today. It
+  cannot steal and cannot deanonymise, but it can stall withdrawals indefinitely.</li>
+
+  <li><strong>The trusted setup is single-contributor.</strong> A retained toxic-waste
+  parameter would permit forged proofs — theft from the pool, not deanonymisation of users. An
+  MPC ceremony is a prerequisite for mainnet.</li>
+
+  <li><strong>The owner can replace the verifier.</strong> Without a timelock, this is an
+  unmitigated path to draining the pool by an owner or by whoever compromises the owner key.
+  It is listed here rather than buried in §8.2 because it is the sharpest single-party risk in
+  the current deployment.</li>
+
+  <li><strong>Off-chain metadata leaks.</strong> Claim links, email delivery, and server logs
+  can leak timing and correspondence patterns even while on-chain unlinkability holds fully.
+  A subpoena to the backend operator returns a correspondence graph.</li>
+
+  <li><strong>Network-level correlation is unaddressed.</strong> The protocol conceals the
+  on-chain link. It does nothing about IP addresses, RPC provider logs, or browser
+  fingerprints, and an observer at that layer may reconstruct what the chain does not reveal.</li>
+
+  <li><strong>Timing correlation is real.</strong> A deposit followed minutes later by a
+  same-denomination withdrawal in an otherwise quiet pool is a weak but genuine signal.
+  Waiting is a meaningful defence and is the user's most effective control.</li>
+
+  <li><strong>Notes are bearer instruments.</strong> A lost secret is a lost note, permanently,
+  with no recovery path and nobody to appeal to. The encrypted inbox mitigates loss for
+  registered users; it does not eliminate it.</li>
+
+  <li><strong>The circuit is unaudited.</strong> No third-party review has been completed.
+  Treat all deployed code as experimental.</li>
+</ul>
+</div>
+
+<div class="box brass">
+  <span class="label">Plainly</span>
+  <p>Hushh is testnet software with an unaudited circuit and a single-contributor trusted
+  setup. Do not use it to protect information whose disclosure you cannot afford.</p>
+</div>
+
+<!-- ============ 11 ============ -->
+<h2><span class="num">Section 11</span>Deployment</h2>
+
+<table class="t">
+  <tr><th style="width:26%">Network parameter</th><th>Value</th></tr>
+  <tr><td>Network</td><td>Arc Testnet</td></tr>
+  <tr><td>Chain ID</td><td><code>5042002</code></td></tr>
+  <tr><td>Currency</td><td>USDC</td></tr>
+  <tr><td>RPC</td><td><code>https://rpc.testnet.arc.network</code></td></tr>
+  <tr><td>Explorer</td><td><code>https://testnet.arcscan.app</code></td></tr>
+</table>
+
+<table class="t">
+  <tr><th style="width:26%">Contract</th><th>Address</th></tr>
+  <tr><td>BulletPool</td><td><code>0x9E65584C6ACE76cEFde4FD5f50E6bB9763999dCe</code></td></tr>
+  <tr><td>MerkleRootManager</td><td><code>0x6D6530A1fC908792DA2aa533a5F299283E6F062a</code></td></tr>
+  <tr><td>BulletVerifier</td><td><code>0x0A95c430Bf6AA3140A4Bf04C8D5982472331008d</code></td></tr>
+  <tr><td>MockUSDC</td><td><code>0x7d7aF5715e5671e0E3126b2428Dc2629bD9061e3</code></td></tr>
+</table>
+
+<table class="t">
+  <tr><th style="width:26%">Service</th><th>Endpoint</th></tr>
+  <tr><td>App</td><td><code>hush-protocol-zeta.vercel.app</code></td></tr>
+  <tr><td>Backend</td><td><code>hush-protocol-backend.onrender.com</code></td></tr>
+  <tr><td>Indexer</td><td><code>hush-protocol-indexer.onrender.com</code></td></tr>
+</table>
+
+<p>Build requirements: Node 22+, pnpm 9+, Circom for circuit builds. The verifying key
+<code>withdraw_vk.json</code> is published so that any party can independently verify a proof
+off-chain and confirm that the deployed verifier corresponds to the published circuit.
+Intermediate powers-of-tau and zkey material is never committed.</p>
+
+<!-- ============ 12 ============ -->
+<h2><span class="num">Section 12</span>Roadmap</h2>
+
+<p class="lede">The sequence is deliberate: decentralise the components that can stall the
+system before adding features that widen its surface area. A privacy protocol that grows
+features faster than it sheds trusted parties ends up with a large attack surface defended by
+a small number of promises.</p>
+
+<table class="t">
+  <tr><th style="width:16%">Release</th><th style="width:26%">Theme</th><th>Contents</th></tr>
+  <tr>
+    <td><strong>v1</strong><br><span class="label">shipped</span></td><td>Core rail</td>
+    <td>Fixed-denomination USDC notes · Groth16 withdraw circuit · 64-root acceptance window · username resolution · encrypted inbox · browser-native proof SDK.</td>
+  </tr>
+  <tr>
+    <td><strong>v2</strong><br><span class="label">next</span></td><td>Decentralise the edges</td>
+    <td>Permissionless root posting with multiple independent watchers · MPC trusted setup ceremony · a relayer network enabling gasless withdrawal for recipients holding no gas · client-side witness reconstruction so a user can withdraw with no indexer at all · on-chain identity registry, closing the key-substitution seam (§7.3) · timelocked verifier replacement.</td>
+  </tr>
+  <tr>
+    <td><strong>v3</strong></td><td>Richer privacy</td>
+    <td>Variable amounts via encrypted balances (Pedersen commitments plus range proofs) · note splitting and merging · multi-token shared anonymity sets · stealth digests as the default for every send, giving repeat-payment unlinkability · recurring shielded payroll.</td>
+  </tr>
+  <tr>
+    <td><strong>v4</strong></td><td>Compliance optionality</td>
+    <td>Viewing keys for voluntary disclosure · selective audit trails · proof-of-innocence style attestations. Disclosure controlled by the user, never by the protocol.</td>
+  </tr>
+</table>
+
+<p>Two items deserve emphasis because they change the trust model rather than the feature set.
+<strong>Client-side witness reconstruction</strong> removes the indexer from the critical path
+entirely: a user who syncs <code>Deposit</code> events themselves needs no witness API, which
+converts the indexer from a liveness dependency into a convenience. <strong>Permissionless
+root posting</strong> means a stalled relayer is a nuisance rather than an outage. Together
+they eliminate the only two ways the current system can be stopped.</p>
+
+<!-- ============ 13 ============ -->
+<h2><span class="num">Section 13</span>Compliance posture</h2>
+
+<p>Financial privacy and financial crime are not the same subject, and conflating them
+produces both bad policy and bad protocols. Hushh's position is specific:</p>
+
+<ul class="dash">
+  <li><strong>Non-custodial by construction.</strong> No party in the system, including its
+  authors, can move a user's funds. There is no balance to freeze and no account to seize
+  because there is no account.</li>
+  <li><strong>Disclosure is a user capability, not a protocol backdoor.</strong> The v4 viewing
+  key design lets a user prove to a counterparty, an auditor, or a court that a specific
+  withdrawal corresponds to a specific deposit — voluntarily, selectively, and without granting
+  ongoing access. Because the note secret is the root of that proof, only the user can produce
+  it. A protocol-level disclosure mechanism, by contrast, is a key that exists whether or not
+  anyone consents to its use, and is therefore not built.</li>
+  <li><strong>Everything is public except the link.</strong> Deposits, withdrawals, amounts,
+  and total pool value are all on-chain and continuously auditable. What is hidden is
+  specifically the correspondence between two public events.</li>
+  <li><strong>Denomination ceilings and integration-layer controls</strong> are where
+  jurisdiction-specific requirements belong. An operator building a payroll product on Hushh
+  can apply their own controls at the point of onboarding without the protocol encoding any
+  particular jurisdiction's rules into a contract that cannot be changed.</li>
+</ul>
+
+<p>None of this is legal advice, and the regulatory treatment of shielded pools varies
+substantially by jurisdiction and is unsettled in several major ones. Integrators should take
+their own advice.</p>
+
+<!-- ============ 14 ============ -->
+<h2><span class="num">Section 14</span>Design principles and open problems</h2>
+
+<h3><span class="n">14.1</span>Principles</h3>
+
+<table class="t">
+  <tr><th style="width:34%">Principle</th><th>Why it is enforced</th></tr>
+  <tr><td><strong>Never reimplement crypto in the app</strong></td><td>The frontend calls the SDK. Poseidon and proving exist in exactly one place, so a fix lands once and an audit has one target.</td></tr>
+  <tr><td><strong>The server holds ciphertext, never secrets</strong></td><td>A full backend compromise must leak metadata only. Never funds, never identities, never the on-chain link.</td></tr>
+  <tr><td><strong>Safety on-chain, liveness off-chain</strong></td><td>Anything off-chain may stall the system. Nothing off-chain may break it. This is the line every architectural decision is checked against.</td></tr>
+  <tr><td><strong>State the limits</strong></td><td>Users cannot calibrate real-world risk against marketing language. Section 10 exists for that reason and is maintained as a first-class part of this document, not an appendix to it.</td></tr>
+  <tr><td><strong>Prefer a smaller circuit</strong></td><td>Every constraint is code that must be correct and cannot be patched after notes exist under it. Deposit requires no circuit, and that decision halved the audit surface at no cost to the guarantee.</td></tr>
+</table>
+
+<h3><span class="n">14.2</span>Open problems</h3>
+
+<ul class="dash">
+  <li><strong>Bootstrapping an anonymity set.</strong> Privacy is only valuable at volume and
+  volume only arrives once privacy is valuable. Whether subsidised early deposits, shared
+  multi-token sets, or integration into a high-frequency payment flow is the right answer is
+  unresolved, and it is the hardest problem in the project.</li>
+  <li><strong>Withdrawal timing as a protocol concern.</strong> Users are advised to wait
+  (§9.3), but advice is a weak mechanism. Protocol-enforced randomised delays, batched
+  withdrawal windows, or relayer-side jitter would convert a user discipline into a system
+  property, at some cost to responsiveness.</li>
+  <li><strong>Gas without deanonymisation.</strong> A recipient withdrawing to a fresh address
+  needs gas at that address, and funding it re-links. The v2 relayer network solves this, but
+  a relayer that observes proofs learns timing; relayer selection and payment are themselves a
+  metadata channel.</li>
+  <li><strong>Denomination ladder design.</strong> Fewer sizes means larger partitions and
+  better privacy; more sizes means fewer transactions per payment. The optimal ladder depends
+  on the empirical distribution of payment sizes, which is not yet observable.</li>
+  <li><strong>Recovery without custody.</strong> Social recovery of note secrets without
+  introducing a party who can spend them remains unsolved in a way that ordinary users would
+  accept.</li>
+</ul>
+<!-- ============ APPENDICES ============ -->
+<h2><span class="num">Appendix A</span>Notation</h2>
+
+<table class="t">
+  <tr><th style="width:24%">Symbol</th><th>Meaning</th></tr>
+  <tr><td><code>F</code>, <code>r</code></td><td>Scalar field of BN254 and its prime order.</td></tr>
+  <tr><td><code>H₁, H₂, H₄</code></td><td>Poseidon hash at arity 1, 2, and 4 over <code>F</code> (circomlib instantiation).</td></tr>
+  <tr><td><code>secret</code></td><td>Uniform field element sampled client-side. Sole spending authority for a note.</td></tr>
+  <tr><td><code>C</code></td><td>Note commitment, <code>H₄(secret, recipientDigest, amount, tokenHash)</code>. Appears on-chain at deposit and never at withdraw.</td></tr>
+  <tr><td><code>nullifier</code></td><td><code>H₁(secret)</code>. Appears on-chain at withdraw and never at deposit.</td></tr>
+  <tr><td><code>recipientDigest</code></td><td>Field element binding the note to its payout target. v1: address-derived. P1: stealth-derived per payment.</td></tr>
+  <tr><td><code>tokenHash</code></td><td><code>uint256(uint160(tokenAddress))</code>. Derived identically in circuit and contract.</td></tr>
+  <tr><td><code>root</code></td><td>Root of the depth-20 Poseidon Merkle tree of commitments.</td></tr>
+  <tr><td><code>W</code></td><td>Root acceptance window size. Currently 64.</td></tr>
+  <tr><td><code>d</code></td><td>Tree depth. Currently 20, giving capacity 2²⁰ = 1,048,576 notes.</td></tr>
+  <tr><td><code>(sk_h, pk_h)</code></td><td>Hushh encryption keypair, X25519, derived deterministically from a wallet signature.</td></tr>
+  <tr><td><code>A_eff</code></td><td>Effective anonymity set: unspent notes of the same denomination, excluding adversary-owned notes.</td></tr>
+</table>
+
+<h2><span class="num">Appendix B</span>Contract surface</h2>
+
+<pre><b>BulletPool</b>
+  deposit(token, amount, commitment) → leafIndex
+    emits Deposit(commitment, leafIndex, token, amount)
+
+  withdraw(proof, root, nullifier, recipientDigest,
+           recipient, token, amount)
+    emits Withdrawal(nullifier, recipient)
+
+  addToken(token) / removeToken(token) / isSupported(token)
+  tokenHashOf(token) → uint256
+  pause() / unpause()                       <span class="c"># Ownable2Step</span>
+  setVerifier(addr) / setRootManager(addr)  <span class="c"># timelock: v2</span>
+
+<b>MerkleRootManager</b>
+  postRoot(root)                            <span class="c"># relayer only in v1</span>
+  isKnownRoot(root) → bool                  <span class="c"># rolling window of 64</span>
+
+<b>WithdrawVerifier</b>
+  verifyProof(a, b, c, publicInputs[5]) → bool</pre>
+
+<p>Observe what is absent from the surface: there is no administrative withdrawal, no
+balance mapping keyed by user, and no function that accepts a commitment at withdraw time. The
+absence of the third is what makes the construction work; the absence of the first two is what
+makes it non-custodial.</p>
+
+<h2><span class="num">Appendix C</span>Public input encoding</h2>
+
+<pre>publicInputs[0] = root             <span class="c"># field element, native</span>
+publicInputs[1] = nullifier        <span class="c"># field element, native</span>
+publicInputs[2] = recipientDigest  <span class="c"># uint160 → field, v1</span>
+publicInputs[3] = amount           <span class="c"># ERC-20 base units, e.g. 10_000_000</span>
+publicInputs[4] = tokenHash        <span class="c"># uint256(uint160(token))</span>
+
+<span class="c"># ORDER IS LOCKED. The circuit's declared signal order and the
+# verifier contract's argument order must match exactly. A silent
+# permutation changes the statement being proven without any
+# visible failure until it is exploited.</span></pre>
+
+<h2><span class="num">Appendix D</span>Parameters</h2>
+
+<table class="t">
+  <tr><th style="width:34%">Parameter</th><th style="width:24%">Value</th><th>Rationale / change cost</th></tr>
+  <tr><td>Curve</td><td>BN254 (alt_bn128)</td><td>Native EVM precompiles. Changing requires a new verifier and new setup.</td></tr>
+  <tr><td>Proof system</td><td>Groth16</td><td>Constant proof size and verification cost. Changing requires a full circuit rebuild.</td></tr>
+  <tr><td>Hash</td><td>Poseidon (circomlib)</td><td>Arithmetisation-friendly. Changing invalidates every existing commitment.</td></tr>
+  <tr><td>Tree depth <code>d</code></td><td>20</td><td>1,048,576 note capacity. Deliberate over-provision: cheap now, migration-expensive later.</td></tr>
+  <tr><td>Root window <code>W</code></td><td>64</td><td>Liveness parameter (§6.2). Cheap to raise; raising extends the replay horizon.</td></tr>
+  <tr><td>Denominations</td><td>1 / 10 / 50 / 100 USDC</td><td>Amount-matching resistance. Adding sizes fragments the anonymity set.</td></tr>
+  <tr><td>Confirmations <code>K</code></td><td>chain-dependent</td><td>Reorg safety before leaf finalisation. Small on Arc.</td></tr>
+  <tr><td>Note encryption</td><td>X25519 + XChaCha20-Poly1305</td><td>Ephemeral-static agreement per note. Application layer; changeable without touching the pool.</td></tr>
+</table>
+
+<h2><span class="num">References</span>Selected references</h2>
+
+<ol class="tight" style="font-size:9.6pt">
+  <li>Ben-Sasson, Chiesa, Garman, Green, Miers, Tromer, Virza. <em>Zerocash: Decentralized Anonymous Payments from Bitcoin.</em> IEEE S&amp;P, 2014.</li>
+  <li>Groth. <em>On the Size of Pairing-Based Non-Interactive Arguments.</em> EUROCRYPT, 2016.</li>
+  <li>Grassi, Khovratovich, Rechberger, Roy, Schofnegger. <em>Poseidon: A New Hash Function for Zero-Knowledge Proof Systems.</em> USENIX Security, 2021.</li>
+  <li>Pertsev, Semenov, Storm. <em>Tornado Cash Privacy Solution.</em> 2019.</li>
+  <li>Barbulescu, Duquesne. <em>Updating Key Size Estimations for Pairings.</em> Journal of Cryptology, 2019.</li>
+  <li>Kim, Barbulescu. <em>Extended Tower Number Field Sieve.</em> CRYPTO, 2016.</li>
+  <li>Bowe, Gabizon, Miers. <em>Scalable Multi-party Computation for zk-SNARK Parameters in the Random Beacon Model.</em> 2017.</li>
+  <li>Wahby, Boneh, et al. <em>ERC-5564: Stealth Addresses.</em> Ethereum Improvement Proposals.</li>
+  <li>Bernstein. <em>Curve25519: New Diffie-Hellman Speed Records.</em> PKC, 2006.</li>
+  <li>iden3. <em>circom</em> and <em>circomlib</em>. Reference implementations of the Poseidon and Merkle gadgets used here.</li>
+</ol>
+
+<div class="colophon">
+  <p><strong>Hushh Protocol · Whitepaper v1.0 · Arc Testnet.</strong> This document supersedes
+  the Hushh Litepaper v1.0 and is maintained alongside the implementation; where the two
+  disagree, the implementation and its tests are authoritative and this document is a bug.</p>
+  <p>Hushh Protocol is testnet software with an unaudited circuit and a single-contributor
+  trusted setup. Do not use it to protect information whose disclosure you cannot afford.
+  Nothing in this document is financial, legal, or security advice.</p>
+</div>
+
+</div>
+</body>
+</html>
