@@ -1,0 +1,17 @@
+# Toxic waste / large binaries — do NOT commit
+artifacts/*.ptau
+artifacts/*.zkey
+artifacts/*.r1cs
+artifacts/*.sym
+artifacts/*.wtns
+artifacts/*_js/
+artifacts/withdraw_0.zkey
+keys/*.zkey
+keys/*.ptau
+proofs/*.wtns
+
+# Keep small tracked outputs
+!artifacts/.gitkeep
+!keys/.gitkeep
+!proofs/.gitkeep
+!inputs/.gitkeep
