@@ -1,0 +1,39 @@
+{
+  "name": "@hush/frontend",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Hushh Protocol frontend: Next.js + Tailwind on Arc Testnet (EVM) with ZK withdraw proofs.",
+  "scripts": {
+    "dev": "next dev",
+    "sdk:build": "pnpm --dir ../arc-contracts/sdk install --ignore-workspace && pnpm --dir ../arc-contracts/sdk build",
+    "prebuild": "pnpm run sdk:build",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@bullet/sdk": "link:../arc-contracts/sdk",
+    "@privy-io/react-auth": "^3.35.2",
+    "@tanstack/react-query": "^5.101.4",
+    "canvas-confetti": "^1.9.4",
+    "mermaid": "^11.16.0",
+    "next": "15",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "tweetnacl": "^1.0.3",
+    "viem": "^2.55.5",
+    "wagmi": "^2.19.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.2",
+    "@types/canvas-confetti": "^1.9.0",
+    "@types/node": "^26.0.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.5.2",
+    "postcss": "^8.5.16",
+    "tailwindcss": "^4.3.2",
+    "typescript": "^6.0.3"
+  }
+}
