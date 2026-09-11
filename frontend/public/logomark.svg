@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none" role="img" aria-label="Hushh Protocol">
+  <rect width="128" height="128" rx="32" fill="#0A0A0A"/>
+  <!-- face -->
+  <circle cx="64" cy="66" r="38" fill="#F5F3EE"/>
+  <!-- closed eyes -->
+  <path d="M41 56c3.5-4 10-4 13.5 0" stroke="#0A0A0A" stroke-width="3.75" stroke-linecap="round" fill="none"/>
+  <path d="M73.5 56c3.5-4 10-4 13.5 0" stroke="#0A0A0A" stroke-width="3.75" stroke-linecap="round" fill="none"/>
+  <!-- mouth tucked behind finger -->
+  <path d="M54 78c4 5 12 5 16 0" stroke="#0A0A0A" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+  <!-- index finger -->
+  <rect x="57.5" y="30" width="13" height="58" rx="6.5" fill="#0A0A0A"/>
+  <!-- nail -->
+  <rect x="60" y="32.5" width="8" height="14" rx="4" fill="#E5E0DE"/>
+</svg>
