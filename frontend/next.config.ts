@@ -91,6 +91,13 @@ const nextConfig: NextConfig = {
     "@privy-io/wagmi",
   ],
   webpack: (config, {isServer, webpack}) => {
+    // Optional peers pulled by Privy / MetaMask SDK / Coinbase — unused by Hushh.
+    config.resolve.alias = {
+      ...(config.resolve.alias ?? {}),
+      "@react-native-async-storage/async-storage": false,
+      "@stripe/crypto": false,
+      "@farcaster/mini-app-solana": false,
+    };
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,
