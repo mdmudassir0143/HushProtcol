@@ -1,0 +1,38 @@
+{
+  "network": "arcTestnet",
+  "chainId": 5042002,
+  "deployer": "0xdAF0182De86F904918Db8d07c7340A1EfcDF8244",
+  "contracts": {
+    "BulletVerifier": "0x0A95c430Bf6AA3140A4Bf04C8D5982472331008d",
+    "MerkleRootManager": "0x6D6530A1fC908792DA2aa533a5F299283E6F062a",
+    "BulletPool": "0x9E65584C6ACE76cEFde4FD5f50E6bB9763999dCe",
+    "MockUSDC": "0x7d7aF5715e5671e0E3126b2428Dc2629bD9061e3"
+  },
+  "tokens": [
+    {
+      "address": "0x7d7aF5715e5671e0E3126b2428Dc2629bD9061e3",
+      "symbol": "USDC",
+      "decimals": 6,
+      "enabled": true
+    },
+    {
+      "address": "0x89B50855Aa3bE2F677cD6303Cec089B5F319D72a",
+      "symbol": "EURC",
+      "decimals": 6,
+      "enabled": true
+    },
+    {
+      "address": "0xf0C4a4CE82A5746AbAAd9425360Ab04fbBA432BF",
+      "symbol": "cirBTC",
+      "decimals": 8,
+      "enabled": true
+    },
+    {
+      "address": "0xe9185F0c5F296Ed1797AaE4238D26CCaBEadb86C",
+      "symbol": "USYC",
+      "decimals": 6,
+      "enabled": true
+    }
+  ],
+  "updatedAt": "2026-07-24T19:26:13.326Z"
+}
