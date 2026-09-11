@@ -35,6 +35,10 @@
     "indexer:dev": "pnpm --dir indexer dev",
     "indexer:migrate": "pnpm --dir indexer db:migrate",
     "indexer:test": "pnpm --dir indexer exec node --import tsx --test src/**/*.test.ts",
+    "subgraph:install": "pnpm --dir subgraph install --ignore-workspace",
+    "subgraph:codegen": "pnpm --dir subgraph codegen",
+    "subgraph:build": "pnpm --dir subgraph build",
+    "subgraph:deploy": "pnpm --dir subgraph deploy",
     "backend:install": "pnpm --dir backend install --ignore-workspace",
     "backend:dev": "pnpm --dir backend dev",
     "backend:db": "pnpm --dir backend db:generate && pnpm --dir backend db:push"

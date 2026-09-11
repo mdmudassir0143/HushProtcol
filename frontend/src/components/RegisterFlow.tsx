@@ -364,7 +364,9 @@ function RegisterFlowInner() {
                       <button
                         type="button"
                         disabled={!privyReady || busy}
-                        onClick={() => login()}
+                        onClick={() =>
+                          login({loginMethods: ["twitter"]})
+                        }
                         className="btn-primary"
                       >
                         {!privyReady ? (
@@ -475,7 +477,7 @@ export function RegisterFlow() {
         <p>
           Set{" "}
           <span className="font-mono text-xs">NEXT_PUBLIC_PRIVY_APP_ID</span> to
-          enable Twitter-based username claims.
+          enable Privy wallet connect and Twitter username claims.
         </p>
       </Panel>
     );

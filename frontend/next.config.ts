@@ -85,7 +85,11 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@bullet/sdk", "@privy-io/react-auth"],
+  transpilePackages: [
+    "@bullet/sdk",
+    "@privy-io/react-auth",
+    "@privy-io/wagmi",
+  ],
   webpack: (config, {isServer, webpack}) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,

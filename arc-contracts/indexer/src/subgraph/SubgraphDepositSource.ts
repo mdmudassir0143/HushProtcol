@@ -1,30 +1,31 @@
 import type {DepositEvent} from "../types/index.js";
-import {goldskyQuery} from "./client.js";
+import {subgraphQuery} from "./client.js";
 
 export type DepositSource = {
   latestBlock(): Promise<number>;
   fetchDeposits(fromBlock: number, toBlock: number): Promise<DepositEvent[]>;
 };
 
-type GoldskyDeposit = {
+type SubgraphDeposit = {
   id: string;
   commitment: string | null;
   leafIndex: string | null;
   token: string | null;
   amount: string | null;
-  block_number: string;
-  transactionHash_: string;
+  blockNumber: string;
+  transactionHash: string;
+  logIndex: string;
 };
 
 /**
- * Fetch BulletPool Deposit entities from Goldsky instead of eth_getLogs.
+ * Fetch BulletPool Deposit entities from The Graph instead of eth_getLogs.
  * Indexer still finalizes leaves, builds Poseidon tree, posts roots, serves witnesses.
  */
-export class GoldskyDepositSource implements DepositSource {
+export class SubgraphDepositSource implements DepositSource {
   constructor(private readonly endpoint: string) {}
 
   async latestBlock(): Promise<number> {
-    const data = await goldskyQuery<{_meta: {block: {number: number}}}>(
+    const data = await subgraphQuery<{_meta: {block: {number: number}}}>(
       this.endpoint,
       `{ _meta { block { number } } }`
     );
@@ -42,23 +43,24 @@ export class GoldskyDepositSource implements DepositSource {
     let skip = 0;
 
     for (;;) {
-      const data = await goldskyQuery<{deposits: GoldskyDeposit[]}>(
+      const data = await subgraphQuery<{deposits: SubgraphDeposit[]}>(
         this.endpoint,
         `query Deposits($from: BigInt!, $to: BigInt!, $first: Int!, $skip: Int!) {
           deposits(
             first: $first
             skip: $skip
-            orderBy: block_number
+            orderBy: blockNumber
             orderDirection: asc
-            where: { block_number_gte: $from, block_number_lte: $to }
+            where: { blockNumber_gte: $from, blockNumber_lte: $to }
           ) {
             id
             commitment
             leafIndex
             token
             amount
-            block_number
-            transactionHash_
+            blockNumber
+            transactionHash
+            logIndex
           }
         }`,
         {
@@ -88,18 +90,20 @@ export class GoldskyDepositSource implements DepositSource {
   }
 }
 
-function mapDeposit(d: GoldskyDeposit): DepositEvent | null {
+function mapDeposit(d: SubgraphDeposit): DepositEvent | null {
   if (!d.commitment || d.leafIndex == null || !d.token || d.amount == null) {
     return null;
   }
   const commitment = normalizeHex(d.commitment);
   const token = normalizeHex(d.token);
-  const txHash = normalizeHex(d.transactionHash_);
+  const txHash = normalizeHex(d.transactionHash);
   if (!commitment || !token || !txHash) return null;
 
-  const blockNumber = Number(d.block_number);
-  // Goldsky entity id is typically `${txHash}-${logIndex}`.
-  const logIndex = parseLogIndex(d.id, d.transactionHash_);
+  const blockNumber = Number(d.blockNumber);
+  const logIndex = Number(d.logIndex);
+  const parsedLogIndex = Number.isFinite(logIndex)
+    ? logIndex
+    : parseLogIndex(d.id, d.transactionHash);
 
   return {
     commitment,
@@ -110,7 +114,7 @@ function mapDeposit(d: GoldskyDeposit): DepositEvent | null {
     // Subgraph has no block hash — synthetic placeholder (uniqueness uses tx+log).
     blockHash: syntheticBlockHash(blockNumber),
     txHash,
-    logIndex,
+    logIndex: parsedLogIndex,
   };
 }
 

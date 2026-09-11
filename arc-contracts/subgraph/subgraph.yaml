@@ -1,0 +1,54 @@
+specVersion: 1.2.0
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: BulletPool
+    network: arc-testnet
+    source:
+      address: "0x9E65584C6ACE76cEFde4FD5f50E6bB9763999dCe"
+      abi: BulletPool
+      startBlock: 53078000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Deposit
+        - Withdrawal
+        - TokenAdded
+        - TokenRemoved
+      abis:
+        - name: BulletPool
+          file: ./abis/BulletPool.json
+      eventHandlers:
+        - event: Deposit(indexed bytes32,indexed uint32,indexed address,uint256)
+          handler: handleDeposit
+        - event: Withdrawal(indexed bytes32,indexed address)
+          handler: handleWithdrawal
+        - event: TokenAdded(indexed address,uint8)
+          handler: handleTokenAdded
+        - event: TokenRemoved(indexed address)
+          handler: handleTokenRemoved
+      file: ./src/bullet-pool.ts
+
+  - kind: ethereum
+    name: MerkleRootManager
+    network: arc-testnet
+    source:
+      address: "0x6D6530A1fC908792DA2aa533a5F299283E6F062a"
+      abi: MerkleRootManager
+      startBlock: 53078000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - RootPosted
+      abis:
+        - name: MerkleRootManager
+          file: ./abis/MerkleRootManager.json
+      eventHandlers:
+        - event: RootPosted(indexed bytes32,indexed uint8,uint256)
+          handler: handleRootPosted
+      file: ./src/merkle-root-manager.ts

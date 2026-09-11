@@ -9,15 +9,15 @@ import {
 } from "../db/DepositRepository.js";
 import {PoseidonTree} from "../merkle/PoseidonTree.js";
 import {
-  GoldskyDepositSource,
+  SubgraphDepositSource,
   type DepositSource,
-} from "../goldsky/GoldskyDepositSource.js";
-import {GoldskyRootSource} from "../goldsky/GoldskyRootSource.js";
+} from "../subgraph/SubgraphDepositSource.js";
+import {SubgraphRootSource} from "../subgraph/SubgraphRootSource.js";
 import {RpcDepositSource} from "../watcher/EventWatcher.js";
 import type {DepositEvent, WitnessResponse} from "../types/index.js";
 
 /**
- * Core loop: hydrate tree → ingest deposits (Goldsky or RPC) → confirmations →
+ * Core loop: hydrate tree → ingest deposits (subgraph or RPC) → confirmations →
  * insert leaf → post root → serve witnesses.
  */
 export class SyncService {
@@ -27,7 +27,7 @@ export class SyncService {
   readonly sync = new SyncStateRepository();
   readonly source: DepositSource;
   readonly poster: RootPoster;
-  readonly goldskyRoots: GoldskyRootSource | null;
+  readonly subgraphRoots: SubgraphRootSource | null;
   private readonly client: PublicClient;
   private timer: ReturnType<typeof setTimeout> | null = null;
   private running = false;
@@ -38,14 +38,12 @@ export class SyncService {
     this.poster = new RootPoster(this.client);
     this.tree = new PoseidonTree(config.treeDepth);
 
-    if (config.eventSource === "goldsky") {
-      this.source = new GoldskyDepositSource(config.goldskyBulletPoolUrl);
-      this.goldskyRoots = config.goldskyRootManagerUrl
-        ? new GoldskyRootSource(config.goldskyRootManagerUrl)
-        : null;
+    if (config.eventSource === "subgraph") {
+      this.source = new SubgraphDepositSource(config.subgraphUrl);
+      this.subgraphRoots = new SubgraphRootSource(config.subgraphUrl);
     } else {
       this.source = new RpcDepositSource(this.client);
-      this.goldskyRoots = null;
+      this.subgraphRoots = null;
     }
   }
 
@@ -98,10 +96,10 @@ export class SyncService {
     for (const rootHex of await this.roots.unposted()) {
       try {
         if (
-          this.goldskyRoots &&
-          (await this.goldskyRoots.isRootPosted(rootHex))
+          this.subgraphRoots &&
+          (await this.subgraphRoots.isRootPosted(rootHex))
         ) {
-          await this.roots.markPosted(rootHex, "goldsky");
+          await this.roots.markPosted(rootHex, "subgraph");
           continue;
         }
         const tx = await this.poster.postRoot(rootHex as Hex);
@@ -123,7 +121,7 @@ export class SyncService {
         state.lastProcessedBlock > 0
           ? state.lastProcessedBlock + 1
           : config.startBlock;
-      // Cap range — Goldsky pages internally; keep windows bounded.
+      // Cap range — subgraph pages internally; keep windows bounded.
       const to = Math.min(latest, from + 2_000 - 1);
       let ingested = 0;
 
@@ -185,10 +183,10 @@ export class SyncService {
 
       try {
         if (
-          this.goldskyRoots &&
-          (await this.goldskyRoots.isRootPosted(root))
+          this.subgraphRoots &&
+          (await this.subgraphRoots.isRootPosted(root))
         ) {
-          await this.roots.markPosted(root, "goldsky");
+          await this.roots.markPosted(root, "subgraph");
         } else {
           const tx = await this.poster.postRoot(root as Hex);
           if (tx) await this.roots.markPosted(root, tx);

@@ -1,11 +1,11 @@
-Watches `BulletPool` deposits (via **Goldsky** or RPC), maintains the canonical
-Poseidon Merkle tree, posts roots to `MerkleRootManager`, and serves membership
-witnesses.
+Watches `BulletPool` deposits (via **The Graph** subgraph or RPC), maintains the
+canonical Poseidon Merkle tree, posts roots to `MerkleRootManager`, and serves
+membership witnesses.
 
 **Never** stores secrets. **Never** generates ZK proofs.
 
 ```
-Goldsky Deposit (or RPC logs)
+The Graph Deposit (or RPC logs)
     → ingest (pending)
     → wait CONFIRMATIONS
     → insert leaf (in leafIndex order)
@@ -14,13 +14,13 @@ Goldsky Deposit (or RPC logs)
     → GET /witness/:commitment
 ```
 
-Goldsky = data fetcher. Indexer = tree + root poster + witness API.
+Subgraph = event log. Indexer = tree + root poster + witness API.
 
 ## Layout
 
 ```
 indexer/src/
-├── goldsky/          GraphQL deposit + root sources
+├── subgraph/         GraphQL deposit + root sources (The Graph Studio)
 ├── watcher/          RPC eth_getLogs fallback
 ├── merkle/PoseidonTree.ts
 ├── blockchain/RootPoster.ts
@@ -32,6 +32,9 @@ indexer/src/
 └── main.ts
 ```
 
+Subgraph source lives in [`../subgraph`](../subgraph) — deploy to The Graph Studio,
+then set `SUBGRAPH_URL` here.
+
 ## Setup
 
 ```bash
@@ -39,9 +42,13 @@ cd arc-contracts
 pnpm sdk:build
 pnpm --dir indexer install --ignore-workspace
 cp indexer/.env.example indexer/.env
-# fill RELAYER_PRIVATE_KEY + DATABASE_URL
-# Goldsky URLs default to the public BulletPool / MerkleRootManager subgraphs
+# fill RELAYER_PRIVATE_KEY + DATABASE_URL + SUBGRAPH_URL
 ```
+
+Deploy the subgraph first (see [`../subgraph/README.md`](../subgraph/README.md)), then
+paste the Studio query URL into `SUBGRAPH_URL`.
+
+For local/dev without a subgraph, set `EVENT_SOURCE=rpc`.
 
 MongoDB Atlas:
 
@@ -61,9 +68,8 @@ pnpm --dir indexer dev
 
 | Var | Meaning |
 |-----|---------|
-| `EVENT_SOURCE` | `goldsky` (default) or `rpc` |
-| `GOLDSKY_BULLET_POOL_URL` | Deposit subgraph GraphQL endpoint |
-| `GOLDSKY_ROOT_MANAGER_URL` | RootPosted subgraph (skip redundant postRoot) |
+| `EVENT_SOURCE` | `subgraph` (default) or `rpc` |
+| `SUBGRAPH_URL` | The Graph Studio GraphQL endpoint (required when `EVENT_SOURCE=subgraph`) |
 | `RPC_URL` | EVM JSON-RPC (still needed for `postRoot`) |
 | `BULLET_POOL_ADDRESS` | Pool address |
 | `MERKLE_ROOT_MANAGER_ADDRESS` | Root poster target |

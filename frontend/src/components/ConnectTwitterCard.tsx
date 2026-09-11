@@ -92,7 +92,7 @@ function ConnectTwitterCardInner({className = ""}: {className?: string}) {
     setBusy(true);
     try {
       if (!authenticated) {
-        login();
+        login({loginMethods: ["twitter"]});
         return;
       }
       await syncLink();

@@ -1,0 +1,54 @@
+"""BulletPool Deposit — commitment leaf inserted into the pool."""
+type Deposit @entity(immutable: true) {
+  id: ID!
+  commitment: Bytes!
+  leafIndex: BigInt!
+  token: Bytes!
+  amount: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+  logIndex: BigInt!
+}
+
+"""BulletPool Withdrawal — nullifier spent for a recipient."""
+type Withdrawal @entity(immutable: true) {
+  id: ID!
+  nullifier: Bytes!
+  recipient: Bytes!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+  logIndex: BigInt!
+}
+
+"""MerkleRootManager RootPosted — indexer-posted Poseidon root."""
+type RootPosted @entity(immutable: true) {
+  id: ID!
+  root: Bytes!
+  slot: Int!
+  postedCount: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+  logIndex: BigInt!
+}
+
+"""BulletPool TokenAdded."""
+type TokenAdded @entity(immutable: true) {
+  id: ID!
+  token: Bytes!
+  decimals: Int!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+"""BulletPool TokenRemoved."""
+type TokenRemoved @entity(immutable: true) {
+  id: ID!
+  token: Bytes!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

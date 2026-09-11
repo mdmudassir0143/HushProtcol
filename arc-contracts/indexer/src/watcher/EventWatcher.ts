@@ -2,7 +2,7 @@ import type {PublicClient} from "viem";
 import {parseAbiItem} from "viem";
 import {config} from "../config/index.js";
 import type {DepositEvent} from "../types/index.js";
-import type {DepositSource} from "../goldsky/GoldskyDepositSource.js";
+import type {DepositSource} from "../subgraph/SubgraphDepositSource.js";
 
 const depositEvent = parseAbiItem(
   "event Deposit(bytes32 indexed commitment, uint32 indexed leafIndex, address indexed token, uint256 amount)"
@@ -70,5 +70,5 @@ export class RpcDepositSource implements DepositSource {
   }
 }
 
-/** @deprecated Prefer RpcDepositSource / GoldskyDepositSource */
+/** @deprecated Prefer RpcDepositSource / SubgraphDepositSource */
 export class EventWatcher extends RpcDepositSource {}

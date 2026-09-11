@@ -18,12 +18,12 @@ function parseAddress(name: string, value: string): `0x${string}` {
   return value.toLowerCase() as `0x${string}`;
 }
 
-export type EventSourceMode = "goldsky" | "rpc";
+export type EventSourceMode = "subgraph" | "rpc";
 
 function parseEventSource(): EventSourceMode {
-  const raw = (process.env.EVENT_SOURCE || "goldsky").trim().toLowerCase();
+  const raw = (process.env.EVENT_SOURCE || "subgraph").trim().toLowerCase();
   if (raw === "rpc") return "rpc";
-  return "goldsky";
+  return "subgraph";
 }
 
 export const config = {
@@ -49,14 +49,8 @@ export const config = {
   apiPort: Number(optionalEnv("API_PORT", "4010")),
   skipPostRoot: optionalEnv("SKIP_POST_ROOT", "0") === "1",
   eventSource: parseEventSource(),
-  goldskyBulletPoolUrl: (
-    process.env.GOLDSKY_BULLET_POOL_URL ||
-    "https://api.goldsky.com/api/public/project_cmrzb84g5syuc01vz6wx2ad6n/subgraphs/BulletPool/1.0.0/gn"
-  ).trim(),
-  goldskyRootManagerUrl: (
-    process.env.GOLDSKY_ROOT_MANAGER_URL ||
-    "https://api.goldsky.com/api/public/project_cmrzb84g5syuc01vz6wx2ad6n/subgraphs/MerkleRootManager/1.0.0/gn"
-  ).trim(),
+  /** The Graph Studio / graph-node GraphQL HTTP endpoint (combined BulletPool + RootManager). */
+  subgraphUrl: (process.env.SUBGRAPH_URL || "").trim(),
 };
 
 export function assertRuntimeConfig(): void {
@@ -74,9 +68,9 @@ export function assertRuntimeConfig(): void {
   if (config.confirmations < 1) {
     throw new Error("CONFIRMATIONS must be >= 1");
   }
-  if (config.eventSource === "goldsky" && !config.goldskyBulletPoolUrl) {
+  if (config.eventSource === "subgraph" && !config.subgraphUrl) {
     throw new Error(
-      "GOLDSKY_BULLET_POOL_URL is required when EVENT_SOURCE=goldsky"
+      "SUBGRAPH_URL is required when EVENT_SOURCE=subgraph (The Graph Studio query URL)"
     );
   }
 }

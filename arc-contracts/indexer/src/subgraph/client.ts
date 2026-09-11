@@ -1,6 +1,6 @@
-/** Minimal GraphQL POST helper for Goldsky subgraph endpoints. */
+/** Minimal GraphQL POST helper for The Graph Studio / graph-node endpoints. */
 
-export async function goldskyQuery<T>(
+export async function subgraphQuery<T>(
   endpoint: string,
   query: string,
   variables?: Record<string, unknown>
@@ -13,7 +13,7 @@ export async function goldskyQuery<T>(
   if (!res.ok) {
     const body = await res.text().catch(() => "");
     throw new Error(
-      `Goldsky HTTP ${res.status}: ${body.slice(0, 200) || res.statusText}`
+      `Subgraph HTTP ${res.status}: ${body.slice(0, 200) || res.statusText}`
     );
   }
   const json = (await res.json()) as {
@@ -22,11 +22,11 @@ export async function goldskyQuery<T>(
   };
   if (json.errors?.length) {
     throw new Error(
-      `Goldsky GraphQL: ${json.errors.map((e) => e.message).join("; ")}`
+      `Subgraph GraphQL: ${json.errors.map((e) => e.message).join("; ")}`
     );
   }
   if (!json.data) {
-    throw new Error("Goldsky GraphQL: empty data");
+    throw new Error("Subgraph GraphQL: empty data");
   }
   return json.data;
 }
