@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
+}
+
+model User {
+  id               String   @id @default(cuid()) @map("_id")
+  wallet           String   @unique
+  username         String   @unique
+  bulletPublicKey  String
+  /** Linked X handle (no @), from Privy Twitter OAuth. */
+  twitterUsername  String?  @unique
+  /** Privy DID for the linked Twitter session. */
+  privyDid         String?
+  /** Twitter subject id from Privy. */
+  twitterSubject   String?  @unique
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  receivedNotes    Note[]   @relation("RecipientNotes")
+  sentNotes        Note[]   @relation("SenderNotes")
+}
+
+model Note {
+  id                 String   @id @default(cuid()) @map("_id")
+  recipientId        String
+  recipient          User     @relation("RecipientNotes", fields: [recipientId], references: [id])
+  senderId           String?
+  sender             User?    @relation("SenderNotes", fields: [senderId], references: [id])
+  commitment         String
+  encryptedPayload   String
+  claimed            Boolean  @default(false)
+  /** Withdraw tx hash on Arc (set when claimed). */
+  claimTxHash        String?
+  /** Deposit tx hash on Arc (set at send). */
+  depositTxHash      String?
+  /** Human USDC amount for history UI (e.g. "10" or "1.5"). */
+  amount             String?
+  /** Token symbol at send time (USDC, EURC, cirBTC). */
+  tokenSymbol        String?
+  /** Recipient username snapshot at send time. */
+  recipientUsername  String?
+  createdAt          DateTime @default(now())
+
+  @@index([recipientId])
+  @@index([senderId])
+  @@index([commitment])
+}
