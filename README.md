@@ -8,9 +8,9 @@ Tagline: send silently.
 
 | Service | URL |
 |---------|-----|
-| **App** | [https://hush-protocol-zeta.vercel.app](https://hush-protocol-zeta.vercel.app) |
-| **Backend** | [https://hush-protocol-backend.onrender.com](https://hush-protocol-backend.onrender.com) |
-| **Indexer** | [https://hush-protocol-indexer.onrender.com](https://hush-protocol-indexer.onrender.com) |
+| **App** | [https://hushh-inky.vercel.app](https://hushh-inky.vercel.app) |
+| **Backend** | [https://hush-protocol-backend-w7qx.onrender.com](https://hush-protocol-backend-w7qx.onrender.com) |
+| **Indexer** | [https://hush-protocol-indexer-iqcg.onrender.com](https://hush-protocol-indexer-iqcg.onrender.com) |
 | **Explorer** | [https://testnet.arcscan.app](https://testnet.arcscan.app) |
 | **RPC** | `https://rpc.testnet.arc.network` (chain id `5042002`) |
 
@@ -289,9 +289,9 @@ cp frontend/.env.example frontend/.env
 # NEXT_PUBLIC_BACKEND_URL=http://127.0.0.1:4020
 # NEXT_PUBLIC_INDEXER_URL=http://127.0.0.1:4010
 # Hosted:
-# NEXT_PUBLIC_FRONTEND_URL=https://hush-protocol-zeta.vercel.app
-# NEXT_PUBLIC_BACKEND_URL=https://hush-protocol-backend.onrender.com
-# NEXT_PUBLIC_INDEXER_URL=https://hush-protocol-indexer.onrender.com
+# NEXT_PUBLIC_FRONTEND_URL=https://hushh-inky.vercel.app
+# NEXT_PUBLIC_BACKEND_URL=https://hush-protocol-backend-w7qx.onrender.com
+# NEXT_PUBLIC_INDEXER_URL=https://hush-protocol-indexer-iqcg.onrender.com
 ```
 
 ---

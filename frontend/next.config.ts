@@ -1,4 +1,5 @@
 import type {NextConfig} from "next";
+import path from "node:path";
 
 const isDev = process.env.NODE_ENV !== "production";
 
@@ -29,6 +30,8 @@ const connectSrc = [
   "https://arc-testnet.drpc.org",
   "https://hush-protocol-backend.onrender.com",
   "https://hush-protocol-indexer.onrender.com",
+  "https://hush-protocol-backend-w7qx.onrender.com",
+  "https://hush-protocol-indexer-iqcg.onrender.com",
   "https://*.walletconnect.com",
   "https://*.walletconnect.org",
   "wss://*.walletconnect.com",
@@ -91,6 +94,10 @@ const nextConfig: NextConfig = {
     "@privy-io/wagmi",
   ],
   webpack: (config, {isServer, webpack}) => {
+    config.resolve.modules = [
+      path.resolve(process.cwd(), "node_modules"),
+      ...(config.resolve.modules || ["node_modules"]),
+    ];
     // Optional peers pulled by Privy / MetaMask SDK / Coinbase — unused by Hushh.
     config.resolve.alias = {
       ...(config.resolve.alias ?? {}),
